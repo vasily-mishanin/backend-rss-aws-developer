@@ -58,8 +58,8 @@ export class ProductServiceStack extends cdk.Stack {
     const productsIntegration = new LambdaIntegration(getProductsList);
     const productIntegration = new LambdaIntegration(getProductsById);
 
-    products.addMethod('GET', productsIntegration, { apiKeyRequired: true });
-    product.addMethod('GET', productIntegration, { apiKeyRequired: true });
+    products.addMethod('GET', productsIntegration, { apiKeyRequired: false });
+    product.addMethod('GET', productIntegration, { apiKeyRequired: false });
 
     new cdk.CfnOutput(this, 'API Key ID', {
       value: apiKey.keyId,
