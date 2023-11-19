@@ -60,11 +60,17 @@ provider:
 
 functions:
   getProductsList:
-    handler: handler.getProductsList
+    handler: handlerGetProductsList.getProductsList
     events:
       - httpApi:
           method: GET
           path: /products
+  getProductsById:
+    handler: handlerGetProductsById.getProductsById
+    events:
+      - httpApi:
+          method: GET
+          path: /products/{productId}
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
