@@ -8,9 +8,9 @@ const testHeaders = {
   'Access-Control-Allow-Methods': 'OPTIONS,POST,GET',
 };
 
-describe('Handlers', () => {
-  test('getProductsList returns correct response', () => {
-    const response = getProductsList();
+describe('Handlers', async () => {
+  test('getProductsList returns correct response', async () => {
+    const response = await getProductsList();
     expect(response.statusCode).toBe(200);
     expect(response.headers).toEqual(expect.objectContaining(testHeaders));
 

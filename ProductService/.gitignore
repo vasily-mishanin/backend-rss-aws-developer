@@ -2,7 +2,9 @@
 !insert-products.js
 !jest.config.js
 *.d.ts
+# *.map
 node_modules
+
 
 # CDK asset staging directory
 .cdk.staging
