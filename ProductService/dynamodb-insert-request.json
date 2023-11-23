@@ -1,0 +1,306 @@
+{
+  "products": [
+    {
+      "PutRequest": {
+        "Item": {
+          "id": {
+            "S": "f1fa2e28-c951-429d-a96e-e9743ef58ce5"
+          },
+          "title": {
+            "S": "iPhone 9"
+          },
+          "description": {
+            "S": "An apple mobile which is nothing like apple"
+          },
+          "price": {
+            "N": "549"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": {
+            "S": "5c25afa6-4b5e-4179-b2e9-476116c12218"
+          },
+          "title": {
+            "S": "iPhone X"
+          },
+          "description": {
+            "S": "SIM-Free, Model A19211 6.5-inch Super Retina HD display with OLED technology A12 Bionic chip with ..."
+          },
+          "price": {
+            "N": "899"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": {
+            "S": "99ad3978-748d-4daf-8f5d-de62f808e8bc"
+          },
+          "title": {
+            "S": "Samsung Universe 9"
+          },
+          "description": {
+            "S": "Samsung's new variant which goes beyond Galaxy to the Universe"
+          },
+          "price": {
+            "N": "1249"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": {
+            "S": "0a9bbc61-3659-4c2c-bbdb-04d2f733c62f"
+          },
+          "title": {
+            "S": "OPPOF19"
+          },
+          "description": {
+            "S": "OPPO F19 is officially announced on April 2021."
+          },
+          "price": {
+            "N": "280"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": {
+            "S": "31995257-b77b-4869-8ce4-79e967d20e40"
+          },
+          "title": {
+            "S": "Huawei P30"
+          },
+          "description": {
+            "S": "Huawei’s re-badged P30 Pro New Edition was officially unveiled yesterday in Germany and now the device has made its way to the UK."
+          },
+          "price": {
+            "N": "499"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": {
+            "S": "353e48e0-72d1-42c4-b0de-0c249d842373"
+          },
+          "title": {
+            "S": "MacBook Pro"
+          },
+          "description": {
+            "S": "MacBook Pro 2021 with mini-LED display may launch between September, November"
+          },
+          "price": {
+            "N": "1749"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": {
+            "S": "e4ae8809-83e3-4a82-aa2d-e653271151d6"
+          },
+          "title": {
+            "S": "Samsung Galaxy Book"
+          },
+          "description": {
+            "S": "Samsung Galaxy Book S (2020) Laptop With Intel Lakefield Chip, 8GB of RAM Launched"
+          },
+          "price": {
+            "N": "1499"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": {
+            "S": "a3c3e7c6-353e-423b-ab2f-f4605541b3ed"
+          },
+          "title": {
+            "S": "Microsoft Surface Laptop 4"
+          },
+          "description": {
+            "S": "Style and speed. Stand out on HD video calls backed by Studio Mics. Capture ideas on the vibrant touchscreen."
+          },
+          "price": {
+            "N": "1499"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": {
+            "S": "50a338cb-a2ae-48d2-8950-917e06c4a6e3"
+          },
+          "title": {
+            "S": "Infinix INBOOK"
+          },
+          "description": {
+            "S": "Infinix Inbook X1 Ci3 10th 8GB 256GB 14 Win10 Grey – 1 Year Warranty"
+          },
+          "price": {
+            "N": "1099"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": {
+            "S": "5a3526e4-71ba-4261-8bc1-62b6e7d0a9c5"
+          },
+          "title": {
+            "S": "HP Pavilion 15-DK1056WM"
+          },
+          "description": {
+            "S": "HP Pavilion 15-DK1056WM Gaming Laptop 10th Gen Core i5, 8GB, 256GB SSD, GTX 1650 4GB, Windows 10"
+          },
+          "price": {
+            "N": "1099"
+          }
+        }
+      }
+    }
+  ],
+  "stocks": [
+    {
+      "PutRequest": {
+        "Item": {
+          "product_id": {
+            "S": "f1fa2e28-c951-429d-a96e-e9743ef58ce5"
+          },
+          "count": {
+            "N": "7"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "product_id": {
+            "S": "5c25afa6-4b5e-4179-b2e9-476116c12218"
+          },
+          "count": {
+            "N": "9"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "product_id": {
+            "S": "99ad3978-748d-4daf-8f5d-de62f808e8bc"
+          },
+          "count": {
+            "N": "8"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "product_id": {
+            "S": "0a9bbc61-3659-4c2c-bbdb-04d2f733c62f"
+          },
+          "count": {
+            "N": "0"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "product_id": {
+            "S": "31995257-b77b-4869-8ce4-79e967d20e40"
+          },
+          "count": {
+            "N": "5"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "product_id": {
+            "S": "353e48e0-72d1-42c4-b0de-0c249d842373"
+          },
+          "count": {
+            "N": "9"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "product_id": {
+            "S": "e4ae8809-83e3-4a82-aa2d-e653271151d6"
+          },
+          "count": {
+            "N": "3"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "product_id": {
+            "S": "a3c3e7c6-353e-423b-ab2f-f4605541b3ed"
+          },
+          "count": {
+            "N": "9"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "product_id": {
+            "S": "50a338cb-a2ae-48d2-8950-917e06c4a6e3"
+          },
+          "count": {
+            "N": "9"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "product_id": {
+            "S": "5a3526e4-71ba-4261-8bc1-62b6e7d0a9c5"
+          },
+          "count": {
+            "N": "3"
+          }
+        }
+      }
+    }
+  ]
+}
