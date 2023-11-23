@@ -75,17 +75,35 @@ export class ProductServiceStack extends cdk.Stack {
       }
     );
 
+    const createProductLambda = new NodejsFunction(
+      this,
+      'createProductLambda',
+      {
+        entry: 'resources/endpoints/products.ts',
+        handler: 'handler',
+        environment: {
+          PRODUCTS_TABLE_NAME: productsDbTable.tableName,
+          STOCKS_TABLE_NAME: stocksDbTable.tableName,
+        },
+      }
+    );
+
     // connect Lambdas to DynamoDB tables
     // for get all
     productsDbTable.grantReadWriteData(getProductsListLambda);
     productsDbTable.grantReadWriteData(getProductsListLambda);
     stocksDbTable.grantReadWriteData(getProductsListLambda);
     stocksDbTable.grantReadWriteData(getProductsListLambda);
+
     // for get one
     productsDbTable.grantReadWriteData(getProductsByIdLambda);
     productsDbTable.grantReadWriteData(getProductsByIdLambda);
     stocksDbTable.grantReadWriteData(getProductsByIdLambda);
     stocksDbTable.grantReadWriteData(getProductsByIdLambda);
+
+    // for create-one
+    productsDbTable.grantReadWriteData(createProductLambda);
+    stocksDbTable.grantReadWriteData(createProductLambda);
 
     // link all together
     const products = api.root.addResource('products');
@@ -93,9 +111,14 @@ export class ProductServiceStack extends cdk.Stack {
 
     const productsIntegration = new LambdaIntegration(getProductsListLambda);
     const productIntegration = new LambdaIntegration(getProductsByIdLambda);
+    const createProductIntegration = new LambdaIntegration(createProductLambda);
 
     products.addMethod('GET', productsIntegration, { apiKeyRequired: false });
     product.addMethod('GET', productIntegration, { apiKeyRequired: false });
+
+    products.addMethod('POST', createProductIntegration, {
+      apiKeyRequired: false,
+    });
 
     new cdk.CfnOutput(this, 'API Key ID', {
       value: apiKey.keyId,

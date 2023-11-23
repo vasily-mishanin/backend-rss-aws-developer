@@ -139,6 +139,7 @@ const dynamoDBItems = products.map((product) => ({
       title: { S: product.title },
       description: { S: product.description },
       price: { N: product.price.toString() },
+      thumbnail: { S: product.thumbnail },
     },
   },
 }));

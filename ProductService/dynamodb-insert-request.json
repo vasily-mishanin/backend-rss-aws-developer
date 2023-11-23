@@ -4,7 +4,7 @@
       "PutRequest": {
         "Item": {
           "id": {
-            "S": "f1fa2e28-c951-429d-a96e-e9743ef58ce5"
+            "S": "4d5b1b11-f464-47f6-82b9-1e19f217bb54"
           },
           "title": {
             "S": "iPhone 9"
@@ -14,6 +14,9 @@
           },
           "price": {
             "N": "549"
+          },
+          "thumbnail": {
+            "S": "https://i.dummyjson.com/data/products/1/thumbnail.jpg"
           }
         }
       }
@@ -22,7 +25,7 @@
       "PutRequest": {
         "Item": {
           "id": {
-            "S": "5c25afa6-4b5e-4179-b2e9-476116c12218"
+            "S": "2f07a52b-0fbb-404c-bbdb-12c0bdefbd0c"
           },
           "title": {
             "S": "iPhone X"
@@ -32,6 +35,9 @@
           },
           "price": {
             "N": "899"
+          },
+          "thumbnail": {
+            "S": "https://i.dummyjson.com/data/products/2/thumbnail.jpg"
           }
         }
       }
@@ -40,7 +46,7 @@
       "PutRequest": {
         "Item": {
           "id": {
-            "S": "99ad3978-748d-4daf-8f5d-de62f808e8bc"
+            "S": "eed23668-37de-4155-8f58-c49322550241"
           },
           "title": {
             "S": "Samsung Universe 9"
@@ -50,6 +56,9 @@
           },
           "price": {
             "N": "1249"
+          },
+          "thumbnail": {
+            "S": "https://i.dummyjson.com/data/products/3/thumbnail.jpg"
           }
         }
       }
@@ -58,7 +67,7 @@
       "PutRequest": {
         "Item": {
           "id": {
-            "S": "0a9bbc61-3659-4c2c-bbdb-04d2f733c62f"
+            "S": "ae73df2c-eda5-43e0-b52c-ca6d7334ca52"
           },
           "title": {
             "S": "OPPOF19"
@@ -68,6 +77,9 @@
           },
           "price": {
             "N": "280"
+          },
+          "thumbnail": {
+            "S": "https://i.dummyjson.com/data/products/4/thumbnail.jpg"
           }
         }
       }
@@ -76,7 +88,7 @@
       "PutRequest": {
         "Item": {
           "id": {
-            "S": "31995257-b77b-4869-8ce4-79e967d20e40"
+            "S": "3e463faa-9e46-49e0-b1cf-890bf69fe677"
           },
           "title": {
             "S": "Huawei P30"
@@ -86,6 +98,9 @@
           },
           "price": {
             "N": "499"
+          },
+          "thumbnail": {
+            "S": "https://i.dummyjson.com/data/products/5/thumbnail.jpg"
           }
         }
       }
@@ -94,7 +109,7 @@
       "PutRequest": {
         "Item": {
           "id": {
-            "S": "353e48e0-72d1-42c4-b0de-0c249d842373"
+            "S": "7d18f7ce-d3cd-4158-9c56-61010e506df0"
           },
           "title": {
             "S": "MacBook Pro"
@@ -104,6 +119,9 @@
           },
           "price": {
             "N": "1749"
+          },
+          "thumbnail": {
+            "S": "https://i.dummyjson.com/data/products/6/thumbnail.png"
           }
         }
       }
@@ -112,7 +130,7 @@
       "PutRequest": {
         "Item": {
           "id": {
-            "S": "e4ae8809-83e3-4a82-aa2d-e653271151d6"
+            "S": "42c2b7be-23ec-49e9-9538-4a531ea5e14e"
           },
           "title": {
             "S": "Samsung Galaxy Book"
@@ -122,6 +140,9 @@
           },
           "price": {
             "N": "1499"
+          },
+          "thumbnail": {
+            "S": "https://i.dummyjson.com/data/products/7/thumbnail.jpg"
           }
         }
       }
@@ -130,7 +151,7 @@
       "PutRequest": {
         "Item": {
           "id": {
-            "S": "a3c3e7c6-353e-423b-ab2f-f4605541b3ed"
+            "S": "6d44fd2f-26fa-4f23-a2d0-7e4c7240b91f"
           },
           "title": {
             "S": "Microsoft Surface Laptop 4"
@@ -140,6 +161,9 @@
           },
           "price": {
             "N": "1499"
+          },
+          "thumbnail": {
+            "S": "https://i.dummyjson.com/data/products/8/thumbnail.jpg"
           }
         }
       }
@@ -148,7 +172,7 @@
       "PutRequest": {
         "Item": {
           "id": {
-            "S": "50a338cb-a2ae-48d2-8950-917e06c4a6e3"
+            "S": "df06a308-6d5d-465d-bd70-6d461e6b97e3"
           },
           "title": {
             "S": "Infinix INBOOK"
@@ -158,6 +182,9 @@
           },
           "price": {
             "N": "1099"
+          },
+          "thumbnail": {
+            "S": "https://i.dummyjson.com/data/products/9/thumbnail.jpg"
           }
         }
       }
@@ -166,7 +193,7 @@
       "PutRequest": {
         "Item": {
           "id": {
-            "S": "5a3526e4-71ba-4261-8bc1-62b6e7d0a9c5"
+            "S": "7c3ae206-40eb-4357-958c-746bdd1e1222"
           },
           "title": {
             "S": "HP Pavilion 15-DK1056WM"
@@ -176,6 +203,9 @@
           },
           "price": {
             "N": "1099"
+          },
+          "thumbnail": {
+            "S": "https://i.dummyjson.com/data/products/10/thumbnail.jpeg"
           }
         }
       }
@@ -186,10 +216,10 @@
       "PutRequest": {
         "Item": {
           "product_id": {
-            "S": "f1fa2e28-c951-429d-a96e-e9743ef58ce5"
+            "S": "4d5b1b11-f464-47f6-82b9-1e19f217bb54"
           },
           "count": {
-            "N": "7"
+            "N": "3"
           }
         }
       }
@@ -198,31 +228,7 @@
       "PutRequest": {
         "Item": {
           "product_id": {
-            "S": "5c25afa6-4b5e-4179-b2e9-476116c12218"
-          },
-          "count": {
-            "N": "9"
-          }
-        }
-      }
-    },
-    {
-      "PutRequest": {
-        "Item": {
-          "product_id": {
-            "S": "99ad3978-748d-4daf-8f5d-de62f808e8bc"
-          },
-          "count": {
-            "N": "8"
-          }
-        }
-      }
-    },
-    {
-      "PutRequest": {
-        "Item": {
-          "product_id": {
-            "S": "0a9bbc61-3659-4c2c-bbdb-04d2f733c62f"
+            "S": "2f07a52b-0fbb-404c-bbdb-12c0bdefbd0c"
           },
           "count": {
             "N": "0"
@@ -234,10 +240,10 @@
       "PutRequest": {
         "Item": {
           "product_id": {
-            "S": "31995257-b77b-4869-8ce4-79e967d20e40"
+            "S": "eed23668-37de-4155-8f58-c49322550241"
           },
           "count": {
-            "N": "5"
+            "N": "4"
           }
         }
       }
@@ -246,10 +252,10 @@
       "PutRequest": {
         "Item": {
           "product_id": {
-            "S": "353e48e0-72d1-42c4-b0de-0c249d842373"
+            "S": "ae73df2c-eda5-43e0-b52c-ca6d7334ca52"
           },
           "count": {
-            "N": "9"
+            "N": "4"
           }
         }
       }
@@ -258,7 +264,19 @@
       "PutRequest": {
         "Item": {
           "product_id": {
-            "S": "e4ae8809-83e3-4a82-aa2d-e653271151d6"
+            "S": "3e463faa-9e46-49e0-b1cf-890bf69fe677"
+          },
+          "count": {
+            "N": "8"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "product_id": {
+            "S": "7d18f7ce-d3cd-4158-9c56-61010e506df0"
           },
           "count": {
             "N": "3"
@@ -270,7 +288,31 @@
       "PutRequest": {
         "Item": {
           "product_id": {
-            "S": "a3c3e7c6-353e-423b-ab2f-f4605541b3ed"
+            "S": "42c2b7be-23ec-49e9-9538-4a531ea5e14e"
+          },
+          "count": {
+            "N": "8"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "product_id": {
+            "S": "6d44fd2f-26fa-4f23-a2d0-7e4c7240b91f"
+          },
+          "count": {
+            "N": "4"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "product_id": {
+            "S": "df06a308-6d5d-465d-bd70-6d461e6b97e3"
           },
           "count": {
             "N": "9"
@@ -282,22 +324,10 @@
       "PutRequest": {
         "Item": {
           "product_id": {
-            "S": "50a338cb-a2ae-48d2-8950-917e06c4a6e3"
+            "S": "7c3ae206-40eb-4357-958c-746bdd1e1222"
           },
           "count": {
-            "N": "9"
-          }
-        }
-      }
-    },
-    {
-      "PutRequest": {
-        "Item": {
-          "product_id": {
-            "S": "5a3526e4-71ba-4261-8bc1-62b6e7d0a9c5"
-          },
-          "count": {
-            "N": "3"
+            "N": "1"
           }
         }
       }
