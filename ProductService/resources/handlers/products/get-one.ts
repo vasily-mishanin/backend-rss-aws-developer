@@ -1,11 +1,34 @@
+import { IProduct } from '../../../types';
 import { HEADERS } from '../../constants';
-import { products } from '../../mockData/productsData';
+//import { products } from '../../mockData/productsData';
+import { DynamoDBClient, GetItemCommand } from '@aws-sdk/client-dynamodb';
 
-export const getProductsById = ({ productId }: { productId: string }) => {
+//const dynamoDBClient = new DynamoDBClient({ region: 'us-east-1' });
+const dynamoDBClient = new DynamoDBClient();
+
+export const getProductsById = async ({ productId }: { productId: string }) => {
   try {
-    const product = products.find((p) => p.id === parseInt(productId));
+    // const product = products.find((p) => p.id === parseInt(productId));
+    const getProductItemCommand = new GetItemCommand({
+      TableName: process.env.PRODUCTS_TABLE_NAME,
+      Key: {
+        id: { S: productId },
+      },
+    });
 
-    if (!product) {
+    const getStockItemCommand = new GetItemCommand({
+      TableName: process.env.STOCK_TABLE_NAME,
+      Key: {
+        product_id: { S: productId },
+      },
+    });
+
+    const { Item: ProductItem } = await dynamoDBClient.send(
+      getProductItemCommand
+    );
+    const { Item: StockItem } = await dynamoDBClient.send(getStockItemCommand);
+
+    if (!ProductItem) {
       return {
         statusCode: 404,
         body: JSON.stringify({ message: 'Product not found' }),
@@ -13,9 +36,18 @@ export const getProductsById = ({ productId }: { productId: string }) => {
       };
     }
 
+    const foundProduct: IProduct = {
+      id: ProductItem.id?.N,
+      title: ProductItem.title?.S!,
+      description: ProductItem.description.S!,
+      thumbnail: ProductItem.thumbnail.S!,
+      price: parseFloat(ProductItem.price.N!),
+      count: parseInt(StockItem?.count.N!),
+    };
+
     return {
       statusCode: 200,
-      body: JSON.stringify(product, null, 2),
+      body: JSON.stringify(foundProduct, null, 2),
       headers: HEADERS,
     };
   } catch (error) {

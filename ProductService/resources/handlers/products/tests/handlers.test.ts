@@ -19,9 +19,9 @@ describe('Handlers', async () => {
     expect(products.length).toBe(10); // Ensure the ar
   });
 
-  test('getProductsById returns correct response for existing product', () => {
-    const productId = '10'; // Replace with an existing product ID
-    const response = getProductsById({ productId });
+  test('getProductsById returns correct response for existing product', async () => {
+    const productId = '7c3ae206-40eb-4357-958c-746bdd1e1222';
+    const response = await getProductsById({ productId });
     expect(response.statusCode).toBe(200);
     expect(response.headers).toEqual(expect.objectContaining(testHeaders));
 
@@ -29,9 +29,9 @@ describe('Handlers', async () => {
     expect(product.title).toBe('HP Pavilion 15-DK1056WM');
   });
 
-  test('getProductsById returns correct response for non-existing product', () => {
-    const productId = 'nonexistent'; // Replace with a non-existing product ID
-    const response = getProductsById({ productId });
+  test('getProductsById returns correct response for non-existing product', async () => {
+    const productId = 'nonexisten-id';
+    const response = await getProductsById({ productId });
     expect(response.statusCode).toBe(404);
     expect(response.headers).toEqual(expect.objectContaining(testHeaders));
   });

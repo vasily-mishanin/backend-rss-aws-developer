@@ -2,6 +2,7 @@ import { HEADERS } from '../../constants';
 import {
   AttributeValue,
   DynamoDBClient,
+  GetItemCommand,
   TransactWriteItemsCommand,
 } from '@aws-sdk/client-dynamodb';
 import { IProduct } from '../../../types';
@@ -28,7 +29,7 @@ export const createProduct = async (body: string | null) => {
     description: z.string(),
     price: z.number(),
     thumbnail: z.string(),
-    count: z.number(),
+    count: z.number()!,
   });
 
   const { success: newProductIsValid } = productSchema.safeParse(parsedBody);
@@ -42,6 +43,28 @@ export const createProduct = async (body: string | null) => {
   }
 
   const { count, id, ...newProduct } = parsedBody;
+
+  //check if product with such title already in DB
+  const getProductItemCommand = new GetItemCommand({
+    TableName: process.env.PRODUCTS_TABLE_NAME,
+    Key: {
+      title: { S: newProduct.title },
+    },
+  });
+
+  const { Item: ExistingProductItem } = await dynamodb.send(
+    getProductItemCommand
+  );
+
+  if (ExistingProductItem) {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({
+        message: `Product with title ${ExistingProductItem.title.S} - already exists`,
+      }),
+      header: HEADERS,
+    };
+  }
 
   const newProductItem: Record<string, AttributeValue> = {
     id: { S: productUUID },
