@@ -1,15 +1,12 @@
 import { HEADERS } from '../../constants';
 import {
   AttributeValue,
-  DynamoDB,
   DynamoDBClient,
   TransactWriteItemsCommand,
 } from '@aws-sdk/client-dynamodb';
-import { PutCommand } from '@aws-sdk/lib-dynamodb';
 import { IProduct } from '../../../types';
 const { v4: uuidv4 } = require('uuid');
 import { z } from 'zod';
-import { marshallInput } from '@aws-sdk/lib-dynamodb/dist-types/commands/utils';
 
 const dynamodb = new DynamoDBClient();
 
@@ -20,6 +17,7 @@ export const createProduct = async (body: string | null) => {
     return {
       statusCode: 400,
       body: JSON.stringify({ message: 'Missing body' }),
+      header: HEADERS,
     };
   }
 
@@ -39,6 +37,7 @@ export const createProduct = async (body: string | null) => {
     return {
       statusCode: 400,
       body: JSON.stringify({ message: 'Product data is invalid' }),
+      header: HEADERS,
     };
   }
 
@@ -91,6 +90,7 @@ export const createProduct = async (body: string | null) => {
       body: JSON.stringify({
         message: `Product - ${parsedBody.title} - successfully added`,
       }),
+      header: HEADERS,
     };
   } catch (error) {
     console.error('Error:', error);
@@ -100,6 +100,7 @@ export const createProduct = async (body: string | null) => {
       body: JSON.stringify({
         error: 'Internal Server or DB connections Error',
       }),
+      header: HEADERS,
     };
   }
 };
