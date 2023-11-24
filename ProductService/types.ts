@@ -17,4 +17,5 @@ export interface IProduct {
   price: number;
   description: string;
   thumbnail: string;
+  count: number;
 }

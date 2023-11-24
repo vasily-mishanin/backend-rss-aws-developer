@@ -3,6 +3,8 @@ import { getProductsList } from '../handlers/products/get-all';
 import { getProductsById } from '../handlers/products/get-one';
 
 export const handler = async (event: APIGatewayProxyEvent) => {
+  console.log('Lambda call: ', { event });
+
   const productId = event.pathParameters?.productId;
 
   if (!productId) {

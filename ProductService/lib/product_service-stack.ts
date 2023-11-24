@@ -22,7 +22,7 @@ export class ProductServiceStack extends cdk.Stack {
       'ProductsTable',
       'products'
     );
-    const stocksDbTable = Table.fromTableName(this, 'StocksTable', 'stocks');
+    const stockDbTable = Table.fromTableName(this, 'StocksTable', 'stocks');
 
     //API
     const api = new RestApi(this, 'productsRestAPI', {
@@ -57,7 +57,7 @@ export class ProductServiceStack extends cdk.Stack {
         handler: 'handler',
         environment: {
           PRODUCTS_TABLE_NAME: productsDbTable.tableName,
-          STOCKS_TABLE_NAME: stocksDbTable.tableName,
+          STOCK_TABLE_NAME: stockDbTable.tableName,
         },
       }
     );
@@ -70,7 +70,7 @@ export class ProductServiceStack extends cdk.Stack {
         handler: 'handler',
         environment: {
           PRODUCTS_TABLE_NAME: productsDbTable.tableName,
-          STOCKS_TABLE_NAME: stocksDbTable.tableName,
+          STOCK_TABLE_NAME: stockDbTable.tableName,
         },
       }
     );
@@ -83,7 +83,7 @@ export class ProductServiceStack extends cdk.Stack {
         handler: 'handler',
         environment: {
           PRODUCTS_TABLE_NAME: productsDbTable.tableName,
-          STOCKS_TABLE_NAME: stocksDbTable.tableName,
+          STOCK_TABLE_NAME: stockDbTable.tableName,
         },
       }
     );
@@ -92,18 +92,18 @@ export class ProductServiceStack extends cdk.Stack {
     // for get all
     productsDbTable.grantReadWriteData(getProductsListLambda);
     productsDbTable.grantReadWriteData(getProductsListLambda);
-    stocksDbTable.grantReadWriteData(getProductsListLambda);
-    stocksDbTable.grantReadWriteData(getProductsListLambda);
+    stockDbTable.grantReadWriteData(getProductsListLambda);
+    stockDbTable.grantReadWriteData(getProductsListLambda);
 
     // for get one
     productsDbTable.grantReadWriteData(getProductsByIdLambda);
     productsDbTable.grantReadWriteData(getProductsByIdLambda);
-    stocksDbTable.grantReadWriteData(getProductsByIdLambda);
-    stocksDbTable.grantReadWriteData(getProductsByIdLambda);
+    stockDbTable.grantReadWriteData(getProductsByIdLambda);
+    stockDbTable.grantReadWriteData(getProductsByIdLambda);
 
     // for create-one
     productsDbTable.grantReadWriteData(createProductLambda);
-    stocksDbTable.grantReadWriteData(createProductLambda);
+    stockDbTable.grantReadWriteData(createProductLambda);
 
     // link all together
     const products = api.root.addResource('products');

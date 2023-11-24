@@ -3,6 +3,8 @@ import { getProductsList } from '../handlers/products/get-all';
 import { createProduct } from '../handlers/products/add-one';
 
 export const handler = async (event: APIGatewayProxyEvent) => {
+  console.log('Lambda call: ', { event });
+
   try {
     switch (event.httpMethod) {
       case 'GET':
