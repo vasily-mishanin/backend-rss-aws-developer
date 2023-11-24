@@ -26,6 +26,7 @@ export const getProductsById = async ({ productId }: { productId: string }) => {
     const { Item: ProductItem } = await dynamoDBClient.send(
       getProductItemCommand
     );
+
     const { Item: StockItem } = await dynamoDBClient.send(getStockItemCommand);
 
     if (!ProductItem) {
@@ -37,7 +38,7 @@ export const getProductsById = async ({ productId }: { productId: string }) => {
     }
 
     const foundProduct: IProduct = {
-      id: ProductItem.id?.N,
+      id: ProductItem.id?.S,
       title: ProductItem.title?.S!,
       description: ProductItem.description.S!,
       thumbnail: ProductItem.thumbnail.S!,

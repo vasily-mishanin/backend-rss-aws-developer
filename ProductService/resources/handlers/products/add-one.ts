@@ -3,6 +3,7 @@ import {
   AttributeValue,
   DynamoDBClient,
   GetItemCommand,
+  QueryCommand,
   TransactWriteItemsCommand,
 } from '@aws-sdk/client-dynamodb';
 import { IProduct } from '../../../types';
@@ -32,9 +33,9 @@ export const createProduct = async (body: string | null) => {
     count: z.number()!,
   });
 
-  const { success: newProductIsValid } = productSchema.safeParse(parsedBody);
+  const { success: isNewProductValid } = productSchema.safeParse(parsedBody);
 
-  if (!newProductIsValid) {
+  if (!isNewProductValid) {
     return {
       statusCode: 400,
       body: JSON.stringify({ message: 'Product data is invalid' }),
@@ -44,28 +45,30 @@ export const createProduct = async (body: string | null) => {
 
   const { count, id, ...newProduct } = parsedBody;
 
-  //check if product with such title already in DB
-  const getProductItemCommand = new GetItemCommand({
+  // check if product with such title is already in DB
+  const getProductItemCommand = new QueryCommand({
     TableName: process.env.PRODUCTS_TABLE_NAME,
-    Key: {
-      title: { S: newProduct.title },
+    KeyConditionExpression: 'title = :title',
+    ExpressionAttributeValues: {
+      ':title': { S: newProduct.title },
     },
   });
 
-  const { Item: ExistingProductItem } = await dynamodb.send(
+  const { Items: existingProducts } = await dynamodb.send(
     getProductItemCommand
   );
 
-  if (ExistingProductItem) {
+  if (existingProducts) {
     return {
       statusCode: 400,
       body: JSON.stringify({
-        message: `Product with title ${ExistingProductItem.title.S} - already exists`,
+        message: `Product with title ${newProduct.title} - already exists`,
       }),
       header: HEADERS,
     };
   }
 
+  // in not in DB - add new
   const newProductItem: Record<string, AttributeValue> = {
     id: { S: productUUID },
     title: { S: newProduct.title },
