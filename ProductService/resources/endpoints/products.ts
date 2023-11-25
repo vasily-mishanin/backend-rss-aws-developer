@@ -11,7 +11,7 @@ export const handler = async (event: APIGatewayProxyEvent) => {
         return await getProductsList(); // get-all
         break;
       case 'POST':
-        return await createProduct(event.body); // get-all
+        return await createProduct(event.body); // add-one
         break;
       default:
         return {

@@ -1,35 +1,40 @@
 import { IProduct } from '../../../types';
 import { HEADERS } from '../../constants';
-//import { products } from '../../mockData/productsData';
-import { DynamoDBClient, GetItemCommand } from '@aws-sdk/client-dynamodb';
+import {
+  GetItemCommand,
+  DynamoDBClient,
+  QueryCommand,
+} from '@aws-sdk/client-dynamodb';
 
-//const dynamoDBClient = new DynamoDBClient({ region: 'us-east-1' });
-const dynamoDBClient = new DynamoDBClient();
+const dynamoDBClient = new DynamoDBClient({});
 
 export const getProductsById = async ({ productId }: { productId: string }) => {
+  console.log('getProductsById ', typeof productId, productId);
+  console.log('TABLE ', process.env.PRODUCTS_TABLE_NAME);
+
+  const queryProductItemCommand = new QueryCommand({
+    TableName: process.env.PRODUCTS_TABLE_NAME,
+    ExpressionAttributeValues: { ':value': { S: productId } },
+    KeyConditionExpression: 'id = :value',
+    //ProjectionExpression: 'title',
+  });
+
+  const getStockItemCommand = new GetItemCommand({
+    TableName: process.env.STOCK_TABLE_NAME,
+    Key: {
+      product_id: { S: productId },
+    },
+  });
+
   try {
-    // const product = products.find((p) => p.id === parseInt(productId));
-    const getProductItemCommand = new GetItemCommand({
-      TableName: process.env.PRODUCTS_TABLE_NAME,
-      Key: {
-        id: { S: productId },
-      },
-    });
-
-    const getStockItemCommand = new GetItemCommand({
-      TableName: process.env.STOCK_TABLE_NAME,
-      Key: {
-        product_id: { S: productId },
-      },
-    });
-
-    const { Item: ProductItem } = await dynamoDBClient.send(
-      getProductItemCommand
+    const { Items: existingProducts } = await dynamoDBClient.send(
+      queryProductItemCommand
+    );
+    const { Item: existingStock } = await dynamoDBClient.send(
+      getStockItemCommand
     );
 
-    const { Item: StockItem } = await dynamoDBClient.send(getStockItemCommand);
-
-    if (!ProductItem) {
+    if (!existingProducts || !existingProducts?.length) {
       return {
         statusCode: 404,
         body: JSON.stringify({ message: 'Product not found' }),
@@ -37,13 +42,15 @@ export const getProductsById = async ({ productId }: { productId: string }) => {
       };
     }
 
+    const productItem = existingProducts[0];
+
     const foundProduct: IProduct = {
-      id: ProductItem.id?.S,
-      title: ProductItem.title?.S!,
-      description: ProductItem.description.S!,
-      thumbnail: ProductItem.thumbnail.S!,
-      price: parseFloat(ProductItem.price.N!),
-      count: parseInt(StockItem?.count.N!),
+      id: productItem.id.S,
+      title: productItem.title.S!,
+      description: productItem.description.S!,
+      thumbnail: productItem.thumbnail.S!,
+      price: parseFloat(productItem.price.N!),
+      count: parseInt(existingStock?.count.N!),
     };
 
     return {
@@ -56,7 +63,7 @@ export const getProductsById = async ({ productId }: { productId: string }) => {
 
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: 'Internal Server or DB connection Error' }),
+      body: JSON.stringify({ error: 'Internal Server or DB query Error' }),
     };
   }
 };

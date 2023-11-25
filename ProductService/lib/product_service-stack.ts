@@ -19,10 +19,14 @@ export class ProductServiceStack extends cdk.Stack {
     // declare existing tables
     const productsDbTable = Table.fromTableName(
       this,
-      'ProductsTable',
-      'products'
+      'id_ProductsTable',
+      'ProductsTable'
     );
-    const stockDbTable = Table.fromTableName(this, 'StocksTable', 'stocks');
+    const stockDbTable = Table.fromTableName(
+      this,
+      'id_StockTable',
+      'StockTable'
+    );
 
     //API
     const api = new RestApi(this, 'productsRestAPI', {
@@ -91,14 +95,10 @@ export class ProductServiceStack extends cdk.Stack {
     // connect Lambdas to DynamoDB tables
     // for get all
     productsDbTable.grantReadWriteData(getProductsListLambda);
-    productsDbTable.grantReadWriteData(getProductsListLambda);
-    stockDbTable.grantReadWriteData(getProductsListLambda);
     stockDbTable.grantReadWriteData(getProductsListLambda);
 
     // for get one
     productsDbTable.grantReadWriteData(getProductsByIdLambda);
-    productsDbTable.grantReadWriteData(getProductsByIdLambda);
-    stockDbTable.grantReadWriteData(getProductsByIdLambda);
     stockDbTable.grantReadWriteData(getProductsByIdLambda);
 
     // for create-one
@@ -120,8 +120,8 @@ export class ProductServiceStack extends cdk.Stack {
       apiKeyRequired: false,
     });
 
-    new cdk.CfnOutput(this, 'API Key ID', {
-      value: apiKey.keyId,
-    });
+    // new cdk.CfnOutput(this, 'API Key ID', {
+    //   value: apiKey.keyId,
+    // });
   }
 }

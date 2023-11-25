@@ -144,11 +144,11 @@ const dynamoDBItems = products.map((product) => ({
   },
 }));
 
-const productsItemsStocks = dynamoDBItems.map((item) => ({
+const productsItemsStock = dynamoDBItems.map((item) => ({
   PutRequest: {
     Item: {
       product_id: item.PutRequest.Item.id,
-      count: { N: Math.floor(Math.random() * 10).toString() },
+      count: { N: Math.floor(1 + Math.random() * 10).toString() },
     },
   },
 }));
@@ -156,8 +156,8 @@ const productsItemsStocks = dynamoDBItems.map((item) => ({
 // DynamoDB BatchWriteItem request format
 const dynamoDBRequest = {
   // RequestItems: {
-  products: dynamoDBItems,
-  stocks: productsItemsStocks,
+  ProductsTable: dynamoDBItems,
+  StockTable: productsItemsStock,
   //  },
 };
 

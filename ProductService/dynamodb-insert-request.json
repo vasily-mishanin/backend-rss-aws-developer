@@ -1,10 +1,10 @@
 {
-  "products": [
+  "ProductsTable": [
     {
       "PutRequest": {
         "Item": {
           "id": {
-            "S": "4d5b1b11-f464-47f6-82b9-1e19f217bb54"
+            "S": "2453dbe1-9716-4b6f-88e6-762550eda03b"
           },
           "title": {
             "S": "iPhone 9"
@@ -25,7 +25,7 @@
       "PutRequest": {
         "Item": {
           "id": {
-            "S": "2f07a52b-0fbb-404c-bbdb-12c0bdefbd0c"
+            "S": "33712194-59a0-4027-b853-3f07b1f5b38e"
           },
           "title": {
             "S": "iPhone X"
@@ -46,7 +46,7 @@
       "PutRequest": {
         "Item": {
           "id": {
-            "S": "eed23668-37de-4155-8f58-c49322550241"
+            "S": "79959742-c0fa-496b-84c3-f3e073d6a50d"
           },
           "title": {
             "S": "Samsung Universe 9"
@@ -67,7 +67,7 @@
       "PutRequest": {
         "Item": {
           "id": {
-            "S": "ae73df2c-eda5-43e0-b52c-ca6d7334ca52"
+            "S": "d73c2386-7593-40be-ba6c-b82bcc28d16a"
           },
           "title": {
             "S": "OPPOF19"
@@ -88,7 +88,7 @@
       "PutRequest": {
         "Item": {
           "id": {
-            "S": "3e463faa-9e46-49e0-b1cf-890bf69fe677"
+            "S": "394d1348-c889-4d3d-b202-41e9e9be0aad"
           },
           "title": {
             "S": "Huawei P30"
@@ -109,7 +109,7 @@
       "PutRequest": {
         "Item": {
           "id": {
-            "S": "7d18f7ce-d3cd-4158-9c56-61010e506df0"
+            "S": "8ce74139-3c1d-44ae-a1a4-c35604add8cc"
           },
           "title": {
             "S": "MacBook Pro"
@@ -130,7 +130,7 @@
       "PutRequest": {
         "Item": {
           "id": {
-            "S": "42c2b7be-23ec-49e9-9538-4a531ea5e14e"
+            "S": "b40198f5-df65-4a72-b873-804c83ffadf8"
           },
           "title": {
             "S": "Samsung Galaxy Book"
@@ -151,7 +151,7 @@
       "PutRequest": {
         "Item": {
           "id": {
-            "S": "6d44fd2f-26fa-4f23-a2d0-7e4c7240b91f"
+            "S": "50598e6a-a632-4efb-b3be-ffde633af4c2"
           },
           "title": {
             "S": "Microsoft Surface Laptop 4"
@@ -172,7 +172,7 @@
       "PutRequest": {
         "Item": {
           "id": {
-            "S": "df06a308-6d5d-465d-bd70-6d461e6b97e3"
+            "S": "4012a5f8-ef37-4051-9fb6-d2776041dcc3"
           },
           "title": {
             "S": "Infinix INBOOK"
@@ -193,7 +193,7 @@
       "PutRequest": {
         "Item": {
           "id": {
-            "S": "7c3ae206-40eb-4357-958c-746bdd1e1222"
+            "S": "1d567551-8e8d-46e9-a4f4-4dbfe39b7f80"
           },
           "title": {
             "S": "HP Pavilion 15-DK1056WM"
@@ -211,12 +211,12 @@
       }
     }
   ],
-  "stocks": [
+  "StockTable": [
     {
       "PutRequest": {
         "Item": {
           "product_id": {
-            "S": "4d5b1b11-f464-47f6-82b9-1e19f217bb54"
+            "S": "2453dbe1-9716-4b6f-88e6-762550eda03b"
           },
           "count": {
             "N": "3"
@@ -228,10 +228,10 @@
       "PutRequest": {
         "Item": {
           "product_id": {
-            "S": "2f07a52b-0fbb-404c-bbdb-12c0bdefbd0c"
+            "S": "33712194-59a0-4027-b853-3f07b1f5b38e"
           },
           "count": {
-            "N": "0"
+            "N": "2"
           }
         }
       }
@@ -240,79 +240,7 @@
       "PutRequest": {
         "Item": {
           "product_id": {
-            "S": "eed23668-37de-4155-8f58-c49322550241"
-          },
-          "count": {
-            "N": "4"
-          }
-        }
-      }
-    },
-    {
-      "PutRequest": {
-        "Item": {
-          "product_id": {
-            "S": "ae73df2c-eda5-43e0-b52c-ca6d7334ca52"
-          },
-          "count": {
-            "N": "4"
-          }
-        }
-      }
-    },
-    {
-      "PutRequest": {
-        "Item": {
-          "product_id": {
-            "S": "3e463faa-9e46-49e0-b1cf-890bf69fe677"
-          },
-          "count": {
-            "N": "8"
-          }
-        }
-      }
-    },
-    {
-      "PutRequest": {
-        "Item": {
-          "product_id": {
-            "S": "7d18f7ce-d3cd-4158-9c56-61010e506df0"
-          },
-          "count": {
-            "N": "3"
-          }
-        }
-      }
-    },
-    {
-      "PutRequest": {
-        "Item": {
-          "product_id": {
-            "S": "42c2b7be-23ec-49e9-9538-4a531ea5e14e"
-          },
-          "count": {
-            "N": "8"
-          }
-        }
-      }
-    },
-    {
-      "PutRequest": {
-        "Item": {
-          "product_id": {
-            "S": "6d44fd2f-26fa-4f23-a2d0-7e4c7240b91f"
-          },
-          "count": {
-            "N": "4"
-          }
-        }
-      }
-    },
-    {
-      "PutRequest": {
-        "Item": {
-          "product_id": {
-            "S": "df06a308-6d5d-465d-bd70-6d461e6b97e3"
+            "S": "79959742-c0fa-496b-84c3-f3e073d6a50d"
           },
           "count": {
             "N": "9"
@@ -324,10 +252,82 @@
       "PutRequest": {
         "Item": {
           "product_id": {
-            "S": "7c3ae206-40eb-4357-958c-746bdd1e1222"
+            "S": "d73c2386-7593-40be-ba6c-b82bcc28d16a"
+          },
+          "count": {
+            "N": "8"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "product_id": {
+            "S": "394d1348-c889-4d3d-b202-41e9e9be0aad"
+          },
+          "count": {
+            "N": "2"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "product_id": {
+            "S": "8ce74139-3c1d-44ae-a1a4-c35604add8cc"
+          },
+          "count": {
+            "N": "2"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "product_id": {
+            "S": "b40198f5-df65-4a72-b873-804c83ffadf8"
+          },
+          "count": {
+            "N": "6"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "product_id": {
+            "S": "50598e6a-a632-4efb-b3be-ffde633af4c2"
           },
           "count": {
             "N": "1"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "product_id": {
+            "S": "4012a5f8-ef37-4051-9fb6-d2776041dcc3"
+          },
+          "count": {
+            "N": "3"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "product_id": {
+            "S": "1d567551-8e8d-46e9-a4f4-4dbfe39b7f80"
+          },
+          "count": {
+            "N": "5"
           }
         }
       }
