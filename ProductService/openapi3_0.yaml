@@ -1,9 +1,9 @@
-openapi: '3.0.1'
+openapi: 3.0.1
 info:
-  title: 'ProductApi'
-  version: '2023-11-19 14:53:38UTC'
+  title: ProductsAPI
+  version: 1.0.0-oas3
 servers:
-  - url: 'https://um54zkzc6i.execute-api.us-east-1.amazonaws.com/{basePath}'
+  - url: https://qb6966ovig.execute-api.us-east-1.amazonaws.com/prod/{basePath}
     variables:
       basePath:
         default: ''
@@ -31,7 +31,6 @@ paths:
                   message:
                     type: string
                     example: Internal server or DB connection error
-
     post:
       summary: Create one product
       description: Creates product
@@ -72,7 +71,6 @@ paths:
                   message:
                     type: string
                     example: Internal server or DB connection error
-
   /products/{productId}:
     get:
       summary: Get product by ID
@@ -92,13 +90,12 @@ paths:
         '500':
           description: Internal Server or DB connection Error
     parameters:
-      - name: 'productId'
-        in: 'path'
-        description: 'Generated path parameter for productId'
+      - name: productId
+        in: path
+        description: Generated path parameter for productId
         required: true
         schema:
-          type: 'string'
-
+          type: string
 components:
   schemas:
     Product:
@@ -108,26 +105,26 @@ components:
       properties:
         count:
           type: integer
-          example: 7
+          example: 2
         id:
           type: string
-          example: 7567ec4b-b10c-48c5-9345-fc73c48a80a2
+          example: 33712194-59a0-4027-b853-3f07b1f5b38e
         description:
           type: string
-          example: Short Product Description2
+          example: SIM-Free, Model A19211 6.5-inch Super Retina HD display with OLED
         price:
           type: number
-          example: 23.5
+          example: 899
         title:
           type: string
-          example: ProductTop
+          example: iPhone X
         thumbnail:
           type: string
           example: https://i.dummyjson.com/data/products/10/thumbnail.jpeg
-
     NewProduct:
       required:
         - title
+        - count
       type: object
       properties:
         count:
@@ -135,7 +132,9 @@ components:
           example: 5
         description:
           type: string
-          example: Genuine  Al-Rehab spray perfume from UAE/Saudi Arabia/Yemen High Quality
+          example: >-
+            Genuine  Al-Rehab spray perfume from UAE/Saudi Arabia/Yemen High
+            Quality
         price:
           type: number
           example: 30
@@ -145,7 +144,6 @@ components:
         thumbnail:
           type: string
           example: https://i.dummyjson.com/data/products/15/thumbnail.jpg
-
 x-amazon-apigateway-cors:
   allowMethods:
     - '*'
