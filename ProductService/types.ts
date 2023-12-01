@@ -1,5 +1,5 @@
 export type ShopProduct = {
-  id: number;
+  id: number | string;
   title: string;
   price: number;
   description: string;
@@ -10,3 +10,12 @@ export type ShopProduct = {
   brand: string;
   category: string;
 };
+
+export interface IProduct {
+  id?: string;
+  title: string;
+  price: number;
+  description: string;
+  thumbnail: string;
+  count: number;
+}

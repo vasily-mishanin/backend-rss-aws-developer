@@ -1,0 +1,336 @@
+{
+  "ProductsTable": [
+    {
+      "PutRequest": {
+        "Item": {
+          "id": {
+            "S": "2453dbe1-9716-4b6f-88e6-762550eda03b"
+          },
+          "title": {
+            "S": "iPhone 9"
+          },
+          "description": {
+            "S": "An apple mobile which is nothing like apple"
+          },
+          "price": {
+            "N": "549"
+          },
+          "thumbnail": {
+            "S": "https://i.dummyjson.com/data/products/1/thumbnail.jpg"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": {
+            "S": "33712194-59a0-4027-b853-3f07b1f5b38e"
+          },
+          "title": {
+            "S": "iPhone X"
+          },
+          "description": {
+            "S": "SIM-Free, Model A19211 6.5-inch Super Retina HD display with OLED technology A12 Bionic chip with ..."
+          },
+          "price": {
+            "N": "899"
+          },
+          "thumbnail": {
+            "S": "https://i.dummyjson.com/data/products/2/thumbnail.jpg"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": {
+            "S": "79959742-c0fa-496b-84c3-f3e073d6a50d"
+          },
+          "title": {
+            "S": "Samsung Universe 9"
+          },
+          "description": {
+            "S": "Samsung's new variant which goes beyond Galaxy to the Universe"
+          },
+          "price": {
+            "N": "1249"
+          },
+          "thumbnail": {
+            "S": "https://i.dummyjson.com/data/products/3/thumbnail.jpg"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": {
+            "S": "d73c2386-7593-40be-ba6c-b82bcc28d16a"
+          },
+          "title": {
+            "S": "OPPOF19"
+          },
+          "description": {
+            "S": "OPPO F19 is officially announced on April 2021."
+          },
+          "price": {
+            "N": "280"
+          },
+          "thumbnail": {
+            "S": "https://i.dummyjson.com/data/products/4/thumbnail.jpg"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": {
+            "S": "394d1348-c889-4d3d-b202-41e9e9be0aad"
+          },
+          "title": {
+            "S": "Huawei P30"
+          },
+          "description": {
+            "S": "Huawei’s re-badged P30 Pro New Edition was officially unveiled yesterday in Germany and now the device has made its way to the UK."
+          },
+          "price": {
+            "N": "499"
+          },
+          "thumbnail": {
+            "S": "https://i.dummyjson.com/data/products/5/thumbnail.jpg"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": {
+            "S": "8ce74139-3c1d-44ae-a1a4-c35604add8cc"
+          },
+          "title": {
+            "S": "MacBook Pro"
+          },
+          "description": {
+            "S": "MacBook Pro 2021 with mini-LED display may launch between September, November"
+          },
+          "price": {
+            "N": "1749"
+          },
+          "thumbnail": {
+            "S": "https://i.dummyjson.com/data/products/6/thumbnail.png"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": {
+            "S": "b40198f5-df65-4a72-b873-804c83ffadf8"
+          },
+          "title": {
+            "S": "Samsung Galaxy Book"
+          },
+          "description": {
+            "S": "Samsung Galaxy Book S (2020) Laptop With Intel Lakefield Chip, 8GB of RAM Launched"
+          },
+          "price": {
+            "N": "1499"
+          },
+          "thumbnail": {
+            "S": "https://i.dummyjson.com/data/products/7/thumbnail.jpg"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": {
+            "S": "50598e6a-a632-4efb-b3be-ffde633af4c2"
+          },
+          "title": {
+            "S": "Microsoft Surface Laptop 4"
+          },
+          "description": {
+            "S": "Style and speed. Stand out on HD video calls backed by Studio Mics. Capture ideas on the vibrant touchscreen."
+          },
+          "price": {
+            "N": "1499"
+          },
+          "thumbnail": {
+            "S": "https://i.dummyjson.com/data/products/8/thumbnail.jpg"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": {
+            "S": "4012a5f8-ef37-4051-9fb6-d2776041dcc3"
+          },
+          "title": {
+            "S": "Infinix INBOOK"
+          },
+          "description": {
+            "S": "Infinix Inbook X1 Ci3 10th 8GB 256GB 14 Win10 Grey – 1 Year Warranty"
+          },
+          "price": {
+            "N": "1099"
+          },
+          "thumbnail": {
+            "S": "https://i.dummyjson.com/data/products/9/thumbnail.jpg"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": {
+            "S": "1d567551-8e8d-46e9-a4f4-4dbfe39b7f80"
+          },
+          "title": {
+            "S": "HP Pavilion 15-DK1056WM"
+          },
+          "description": {
+            "S": "HP Pavilion 15-DK1056WM Gaming Laptop 10th Gen Core i5, 8GB, 256GB SSD, GTX 1650 4GB, Windows 10"
+          },
+          "price": {
+            "N": "1099"
+          },
+          "thumbnail": {
+            "S": "https://i.dummyjson.com/data/products/10/thumbnail.jpeg"
+          }
+        }
+      }
+    }
+  ],
+  "StockTable": [
+    {
+      "PutRequest": {
+        "Item": {
+          "product_id": {
+            "S": "2453dbe1-9716-4b6f-88e6-762550eda03b"
+          },
+          "count": {
+            "N": "3"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "product_id": {
+            "S": "33712194-59a0-4027-b853-3f07b1f5b38e"
+          },
+          "count": {
+            "N": "2"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "product_id": {
+            "S": "79959742-c0fa-496b-84c3-f3e073d6a50d"
+          },
+          "count": {
+            "N": "9"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "product_id": {
+            "S": "d73c2386-7593-40be-ba6c-b82bcc28d16a"
+          },
+          "count": {
+            "N": "8"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "product_id": {
+            "S": "394d1348-c889-4d3d-b202-41e9e9be0aad"
+          },
+          "count": {
+            "N": "2"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "product_id": {
+            "S": "8ce74139-3c1d-44ae-a1a4-c35604add8cc"
+          },
+          "count": {
+            "N": "2"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "product_id": {
+            "S": "b40198f5-df65-4a72-b873-804c83ffadf8"
+          },
+          "count": {
+            "N": "6"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "product_id": {
+            "S": "50598e6a-a632-4efb-b3be-ffde633af4c2"
+          },
+          "count": {
+            "N": "1"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "product_id": {
+            "S": "4012a5f8-ef37-4051-9fb6-d2776041dcc3"
+          },
+          "count": {
+            "N": "3"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "product_id": {
+            "S": "1d567551-8e8d-46e9-a4f4-4dbfe39b7f80"
+          },
+          "count": {
+            "N": "5"
+          }
+        }
+      }
+    }
+  ]
+}

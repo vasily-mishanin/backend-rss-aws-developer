@@ -1,71 +1,156 @@
-
-"openapi": "3.0.0"
-"info":
-  "title": "Products Service API"
-  "description": "Made on AWS CDK + API Gateway + Lambda"
-  "version": "1.0.0"
-"servers":
-  -
-    "url": "https://qb6966ovig.execute-api.us-east-1.amazonaws.com/prod"
-"paths":
-  "/products":
-    "get":
-      "summary": "Get a list of products"
-      "responses":
-        "200":
-          "description": "Successful response"
-          "content":
-            "application/json":
-              "example":
-                -
-                  "id": 2
-                  "title": "iPhone X"
-                  "description": "SIM-Free, Model A19211 6.5-inch Super Retina HD display with OLED    technology A12 Bionic chip with ..."
-                  "price": 899
-                  "discountPercentage": 17.94
-                  "rating": 4.44
-                  "stock": 34
-                  "brand": "Apple"
-                  "category": "smartphones"
-                  "thumbnail": "https://i.dummyjson.com/data/products/2/thumbnail.jpg"
-                -
-                  "id": 3
-                  "title": "Samsung Universe 9"
-                  "description": "Samsung's new variant which goes beyond Galaxy to the Universe"
-                  "price": 1249
-                  "discountPercentage": 15.46
-                  "rating": 4.09
-                  "stock": 36
-                  "brand": "Samsung"
-                  "category": "smartphones"
-                  "thumbnail": "https://i.dummyjson.com/data/products/3/thumbnail.jpg"
-  "/products/{productId}":
-    "get":
-      "summary": "Get a specific product by ID"
-      "parameters":
-        -
-          "name": "productId"
-          "in": "path"
-          "required": true
-          "description": "ID of the product to retrieve"
-          "schema":
-            "type": "integer"
-      "responses":
-        "200":
-          "description": "Successful response"
-          "content":
-            "application/json":
-              "example":
-                -
-                  "id": 3
-                  "title": "Samsung Universe 9"
-                  "description": "Samsung's new variant which goes beyond Galaxy to the Universe"
-                  "price": 1249
-                  "discountPercentage": 15.46
-                  "rating": 4.09
-                  "stock": 36
-                  "brand": "Samsung"
-                  "category": "smartphones"
-                  "thumbnail": "https://i.dummyjson.com/data/products/3/thumbnail.jpg"
-        "404":
-          "description": "Product not found"
+openapi: 3.0.1
+info:
+  title: ProductsAPI
+  version: 1.0.0-oas3
+servers:
+  - url: https://qb6966ovig.execute-api.us-east-1.amazonaws.com/prod/{basePath}
+    variables:
+      basePath:
+        default: ''
+paths:
+  /products:
+    get:
+      summary: Get list of products
+      description: Returns full array of products
+      responses:
+        '200':
+          description: Products list found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+        '500':
+          description: Internal error or transaction error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal server or DB connection error
+    post:
+      summary: Create one product
+      description: Creates product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewProduct'
+      responses:
+        '200':
+          description: Product created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Product - <title> - successfully added
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Product data is invalid
+        '500':
+          description: Internal error or transaction error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal server or DB connection error
+  /products/{productId}:
+    get:
+      summary: Get product by ID
+      description: Returns a single product
+      responses:
+        '200':
+          description: Product found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Product not found
+        '500':
+          description: Internal Server or DB connection Error
+    parameters:
+      - name: productId
+        in: path
+        description: Generated path parameter for productId
+        required: true
+        schema:
+          type: string
+components:
+  schemas:
+    Product:
+      required:
+        - title
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 2
+        id:
+          type: string
+          example: 33712194-59a0-4027-b853-3f07b1f5b38e
+        description:
+          type: string
+          example: SIM-Free, Model A19211 6.5-inch Super Retina HD display with OLED
+        price:
+          type: number
+          example: 899
+        title:
+          type: string
+          example: iPhone X
+        thumbnail:
+          type: string
+          example: https://i.dummyjson.com/data/products/10/thumbnail.jpeg
+    NewProduct:
+      required:
+        - title
+        - count
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 5
+        description:
+          type: string
+          example: >-
+            Genuine  Al-Rehab spray perfume from UAE/Saudi Arabia/Yemen High
+            Quality
+        price:
+          type: number
+          example: 30
+        title:
+          type: string
+          example: Eau De Perfume Spray
+        thumbnail:
+          type: string
+          example: https://i.dummyjson.com/data/products/15/thumbnail.jpg
+x-amazon-apigateway-cors:
+  allowMethods:
+    - '*'
+  allowHeaders:
+    - '*'
+  maxAge: -42
+  allowCredentials: false
+  allowOrigins:
+    - '*'
+x-amazon-apigateway-importexport-version: '1.0'

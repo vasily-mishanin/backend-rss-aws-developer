@@ -1,4 +1,5 @@
 import { ShopProduct } from '../../types';
+const { v4: uuidv4 } = require('uuid');
 
 export const products: ShopProduct[] = [
   {
@@ -78,7 +79,7 @@ export const products: ShopProduct[] = [
     thumbnail: 'https://i.dummyjson.com/data/products/6/thumbnail.png',
   },
   {
-    id: 7,
+    id: '1d567551-8e8d-46e9-a4f4-4dbfe39b7f80',
     title: 'Samsung Galaxy Book',
     description:
       'Samsung Galaxy Book S (2020) Laptop With Intel Lakefield Chip, 8GB of RAM Launched',

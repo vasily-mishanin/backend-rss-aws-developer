@@ -1,4 +1,4 @@
-module.exports.products = [
+const products = [
   {
     id: 1,
     title: 'iPhone 9',
@@ -128,3 +128,42 @@ module.exports.products = [
     thumbnail: 'https://i.dummyjson.com/data/products/10/thumbnail.jpeg',
   },
 ];
+
+const { v4: uuidv4 } = require('uuid');
+
+// Convert products array to DynamoDB JSON format
+const dynamoDBItems = products.map((product) => ({
+  PutRequest: {
+    Item: {
+      id: { S: uuidv4() },
+      title: { S: product.title },
+      description: { S: product.description },
+      price: { N: product.price.toString() },
+      thumbnail: { S: product.thumbnail },
+    },
+  },
+}));
+
+const productsItemsStock = dynamoDBItems.map((item) => ({
+  PutRequest: {
+    Item: {
+      product_id: item.PutRequest.Item.id,
+      count: { N: Math.floor(1 + Math.random() * 10).toString() },
+    },
+  },
+}));
+
+// DynamoDB BatchWriteItem request format
+const dynamoDBRequest = {
+  // RequestItems: {
+  ProductsTable: dynamoDBItems,
+  StockTable: productsItemsStock,
+  //  },
+};
+
+console.log(JSON.stringify(dynamoDBRequest, null, 2));
+
+// Then call in AWS CLI
+
+// node insert-products.js > dynamodb-insert-request.json
+// aws dynamodb batch-write-item --request-items file://dynamodb-insert-request.json
