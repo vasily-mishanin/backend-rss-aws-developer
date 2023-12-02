@@ -9,6 +9,7 @@ import {
   UsagePlan,
 } from 'aws-cdk-lib/aws-apigateway';
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
+import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
 
 export class ImportServiceStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -47,6 +48,17 @@ export class ImportServiceStack extends cdk.Stack {
         handler: 'handler',
         environment: {},
       }
+    );
+
+    // Attach an IAM policy to Lambda function to allow it to read from S3
+    importProductsFileLambda.addToRolePolicy(
+      new PolicyStatement({
+        actions: ['s3:GetObject', 's3:ListBucket'],
+        resources: [
+          'arn:aws:s3:::import-service-s3-bucket-aws',
+          'arn:aws:s3:::import-service-s3-bucket-aws/*',
+        ], // bucket ARN
+      })
     );
 
     // LINK all together
