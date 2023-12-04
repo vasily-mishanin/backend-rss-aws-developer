@@ -49,6 +49,11 @@ export const handler = async (event: S3Event) => {
       });
 
       const getObjectCommandOutput = await clientS3.send(getObjectCommand);
+
+      if (!getObjectCommandOutput) {
+        console.log('NOTHING TO PARSE, no object');
+      }
+
       const objectAsString =
         await getObjectCommandOutput.Body?.transformToString();
 
