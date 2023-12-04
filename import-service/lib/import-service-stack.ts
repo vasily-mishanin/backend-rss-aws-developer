@@ -10,10 +10,21 @@ import {
 } from 'aws-cdk-lib/aws-apigateway';
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
 import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as s3n from 'aws-cdk-lib/aws-s3-notifications';
 
 export class ImportServiceStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
+
+    const EXISTING_BUCKET_NAME = 'import-service-s3-bucket-aws';
+
+    // Use the existing S3 bucket
+    const bucketForImport = s3.Bucket.fromBucketName(
+      this,
+      'id_import-service-s3',
+      EXISTING_BUCKET_NAME
+    );
 
     //API
     const api = new RestApi(this, 'importRestAPI', {
@@ -49,6 +60,24 @@ export class ImportServiceStack extends cdk.Stack {
         environment: {},
       }
     );
+
+    const importFileParserLambda = new NodejsFunction(
+      this,
+      'importFileParserLambda',
+      {
+        entry: 'resources/handlers/importFileParser.ts',
+        handler: 'handler',
+        environment: {},
+      }
+    );
+
+    // Add an S3 event notification to trigger the Lambda function
+    bucketForImport.addEventNotification(
+      s3.EventType.OBJECT_CREATED,
+      new s3n.LambdaDestination(importFileParserLambda),
+      { prefix: 'uploaded', suffix: '.csv' }
+    );
+    bucketForImport.grantReadWrite(importFileParserLambda);
 
     // Attach an IAM policy to Lambda function to allow it to read from S3
     importProductsFileLambda.addToRolePolicy(

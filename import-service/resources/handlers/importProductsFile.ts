@@ -1,15 +1,6 @@
 import { HEADERS } from '../constants';
-//import https from 'https';
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
-//import { fromIni } from '@aws-sdk/credential-providers';
-//import { HttpRequest } from '@smithy/protocol-http';
-import {
-  getSignedUrl,
-  S3RequestPresigner,
-} from '@aws-sdk/s3-request-presigner';
-// import { parseUrl } from '@smithy/url-parser';
-// import { formatUrl } from '@aws-sdk/util-format-url';
-// import { Hash } from '@smithy/hash-node';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
 const REGION = 'us-east-1';
 const BUCKET_NAME = 'import-service-s3-bucket-aws';
