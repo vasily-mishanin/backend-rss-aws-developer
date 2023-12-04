@@ -7,10 +7,29 @@ import {
 } from '@aws-sdk/client-s3';
 const csv = require('csv-parser');
 import { Readable } from 'stream';
+import CSVFileValidator from 'csv-file-validator';
+import { HEADERS } from '../constants';
 
 const REGION = 'us-east-1';
 const BUCKET_NAME = 'import-service-s3-bucket-aws';
 const KEY = 'uploaded/catalogCSV.csv';
+
+const validatorConfig = {
+  headers: [
+    { name: 'id', inputName: 'id' },
+    { name: 'title', inputName: 'title' },
+    { name: 'description', inputName: 'description' },
+    { name: 'price', inputName: 'price' },
+    { name: 'discountPercentage', inputName: 'discountPercentage' },
+    { name: 'rating', inputName: 'rating' },
+    { name: 'stock', inputName: 'stock' },
+    { name: 'brand', inputName: 'brand' },
+    { name: 'category', inputName: 'category' },
+    { name: 'thumbnail', inputName: 'thumbnail' },
+  ], // required
+  isHeaderNameOptional: true,
+  isColumnIndexAlphabetic: false,
+};
 
 export const handler = async (event: S3Event) => {
   console.log('PARSER Lambda call: ', event.Records);
@@ -58,6 +77,23 @@ export const handler = async (event: S3Event) => {
         await getObjectCommandOutput.Body?.transformToString();
 
       if (objectAsString) {
+        // validate CSV
+        const validatioinResult = await CSVFileValidator(
+          objectAsString,
+          validatorConfig
+        );
+
+        if (validatioinResult.inValidData.length > 0) {
+          console.error('Invalid file. Provide valid CSV file');
+          return {
+            statusCode: 400,
+            headers: HEADERS,
+            body: JSON.stringify({
+              message: `File ${key} is not CSV file. Provide valid CSV file.`,
+            }),
+          };
+        }
+
         const s3Stream = stringToStream(objectAsString);
         // Parse CSV using csv-parser
         const results = [];
@@ -78,8 +114,23 @@ export const handler = async (event: S3Event) => {
         console.log('NOTHING TO PARSE, no such file OR file is empty');
       }
     }
+
+    return {
+      statusCode: 200,
+      headers: HEADERS,
+      body: JSON.stringify({
+        message: `File(s) parsed correctly`,
+      }),
+    };
   } catch (error) {
     console.error('PARSING  File:', error);
+    return {
+      statusCode: 500,
+      headers: HEADERS,
+      body: JSON.stringify({
+        message: `Error parsing  File`,
+      }),
+    };
   }
 };
 

@@ -9,6 +9,16 @@ export async function importProductsFile({ fileName }: { fileName: string }) {
   const KEY = `uploaded/${fileName}`;
   console.log('importProductsFile KEY ', KEY);
 
+  if (!fileName.toLowerCase().endsWith('.csv')) {
+    return {
+      statusCode: 400,
+      headers: HEADERS,
+      body: JSON.stringify({
+        message: `File ${fileName} is not CSV file. Provide valid CSV file.`,
+      }),
+    };
+  }
+
   const createPresignedUrlWithClient = ({
     region,
     bucket,
