@@ -7,10 +7,9 @@ import {
   RestApi,
   UsagePlan,
 } from 'aws-cdk-lib/aws-apigateway';
-import { AttributeType, BillingMode, Table } from 'aws-cdk-lib/aws-dynamodb';
+import { Table } from 'aws-cdk-lib/aws-dynamodb';
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
 import { Construct } from 'constructs';
-// import * as sqs from 'aws-cdk-lib/aws-sqs';
 
 export class ProductServiceStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -105,7 +104,8 @@ export class ProductServiceStack extends cdk.Stack {
     productsDbTable.grantReadWriteData(createProductLambda);
     stockDbTable.grantReadWriteData(createProductLambda);
 
-    // link all together
+    // LINK all together
+    // Integrate an AWS Lambda function to an API Gateway method.
     const products = api.root.addResource('products');
     const product = products.addResource('{productId}');
 
