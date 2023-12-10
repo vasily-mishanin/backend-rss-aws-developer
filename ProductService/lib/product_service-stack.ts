@@ -10,24 +10,37 @@ import {
 import { Table } from 'aws-cdk-lib/aws-dynamodb';
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
 import { Construct } from 'constructs';
+import * as sqs from 'aws-cdk-lib/aws-sqs';
+import { SqsEventSource } from 'aws-cdk-lib/aws-lambda-event-sources';
+import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
 
 export class ProductServiceStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    // declare existing tables
+    // SQS Queue create (or update if already created)
+    const catalogItemsQueue = new sqs.Queue(this, 'CatalogItemsQueue');
+
+    // Export the 👆 SQS Queue URL - it is needed for another stack ->
+    // -> import-service -> for importFileParser lambda to SEND messages to SQS
+    new cdk.CfnOutput(this, 'CatalogItemsQueueUrl', {
+      value: catalogItemsQueue.queueUrl,
+    });
+
+    // declare existing DynamoDB tables
     const productsDbTable = Table.fromTableName(
       this,
       'id_ProductsTable',
       'ProductsTable'
     );
+
     const stockDbTable = Table.fromTableName(
       this,
       'id_StockTable',
       'StockTable'
     );
 
-    //API
+    //API Gateway
     const api = new RestApi(this, 'productsRestAPI', {
       restApiName: 'productsRestAPI',
       defaultCorsPreflightOptions: {
@@ -91,7 +104,28 @@ export class ProductServiceStack extends cdk.Stack {
       }
     );
 
-    // connect Lambdas to DynamoDB tables
+    // lambda that is triggered by SQS and process imported records from import-service
+    const catalogBatchProcessLambda = new NodejsFunction(
+      this,
+      'catalogBatchProcessLambda',
+      {
+        entry: 'resources/handlers/catalogBatchProcess.ts',
+        handler: 'handler',
+        environment: {
+          PRODUCTS_TABLE_NAME: productsDbTable.tableName,
+          STOCK_TABLE_NAME: stockDbTable.tableName,
+        },
+      }
+    );
+
+    catalogBatchProcessLambda.addEventSource(
+      new SqsEventSource(catalogItemsQueue, { batchSize: 5 })
+    );
+
+    // Grant 👆 Lambda permissions to READ messages from the SQS queue
+    catalogItemsQueue.grantConsumeMessages(catalogBatchProcessLambda);
+
+    // CONNECT another Lambdas to DynamoDB tables
     // for get all
     productsDbTable.grantReadWriteData(getProductsListLambda);
     stockDbTable.grantReadWriteData(getProductsListLambda);
@@ -106,8 +140,8 @@ export class ProductServiceStack extends cdk.Stack {
 
     // LINK all together
     // Integrate an AWS Lambda function to an API Gateway method.
-    const products = api.root.addResource('products');
-    const product = products.addResource('{productId}');
+    const products = api.root.addResource('products'); // add /products   endpoint
+    const product = products.addResource('{productId}'); // add /products/{productId}  endpoint
 
     const productsIntegration = new LambdaIntegration(getProductsListLambda);
     const productIntegration = new LambdaIntegration(getProductsByIdLambda);

@@ -93,6 +93,7 @@ export const createProduct = async (body: string | null) => {
     //   })
     // );
 
+    // for ProductsTable
     const newProductItem: Record<string, AttributeValue> = {
       id: { S: productUUID },
       title: { S: newProduct.title },
@@ -101,6 +102,7 @@ export const createProduct = async (body: string | null) => {
       thumbnail: { S: newProduct.thumbnail },
     };
 
+    // for StockTable
     const newStockItem: Record<string, AttributeValue> = {
       product_id: { S: productUUID },
       count: { N: count.toString() },

@@ -12,12 +12,30 @@ import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
 import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as s3n from 'aws-cdk-lib/aws-s3-notifications';
+import * as sqs from 'aws-cdk-lib/aws-sqs';
 
 export class ImportServiceStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
     const EXISTING_BUCKET_NAME = 'import-service-s3-bucket-aws';
+
+    // // Import the SQS Queue URL from the "products-service" stack
+    // const EXISTING_SQS_QUEUE_URL = cdk.Fn.importValue(
+    //   'ProductsServiceStack:CatalogItemsQueueUrl'
+    // );
+
+    const EXISTING_SQS_QUEUE_URL =
+      'https://sqs.us-east-1.amazonaws.com/230091350506/ProductServiceStack-CatalogItemsQueueB3B6CE23-tbNdqeD4k7Ia';
+    // Replace  with the actual ARN of your existing SQS queue
+    const EXISTING_SQS_QUEUE_ARN =
+      'arn:aws:sqs:us-east-1:230091350506:ProductServiceStack-CatalogItemsQueueB3B6CE23-tbNdqeD4k7Ia';
+    // Create a reference to the existing SQS queue
+    const existingCatalogItemsQueue = sqs.Queue.fromQueueArn(
+      this,
+      'ExistingQueue',
+      EXISTING_SQS_QUEUE_ARN
+    );
 
     // Use the existing S3 bucket
     const bucketForImport = s3.Bucket.fromBucketName(
@@ -51,6 +69,7 @@ export class ImportServiceStack extends cdk.Stack {
     usagePlan.addApiKey(apiKey);
 
     // LAMBDAS
+    // creates suged upload URL for PUT requests
     const importProductsFileLambda = new NodejsFunction(
       this,
       'importProductsFileLambda',
@@ -61,23 +80,29 @@ export class ImportServiceStack extends cdk.Stack {
       }
     );
 
+    // after loading to S3, grabs CSV file, parses it and sends messages to SQS
     const importFileParserLambda = new NodejsFunction(
       this,
       'importFileParserLambda',
       {
         entry: 'resources/handlers/importFileParser.ts',
         handler: 'handler',
-        environment: {},
+        environment: {
+          CATALOG_ITEMS_QUEUE_URL: EXISTING_SQS_QUEUE_URL,
+        },
       }
     );
 
-    // Add an S3 event notification to trigger the Lambda function
+    // Add an S3 event notification to trigger the 👆 Lambda function
     bucketForImport.addEventNotification(
       s3.EventType.OBJECT_CREATED,
       new s3n.LambdaDestination(importFileParserLambda),
       { prefix: 'uploaded', suffix: '.csv' }
     );
     bucketForImport.grantReadWrite(importFileParserLambda);
+
+    // Grant 👆 Lambda permissions to send messages to the SQS queue
+    existingCatalogItemsQueue.grantSendMessages(importFileParserLambda);
 
     // Attach an IAM policy to Lambda function to allow it to read from S3
     importProductsFileLambda.addToRolePolicy(

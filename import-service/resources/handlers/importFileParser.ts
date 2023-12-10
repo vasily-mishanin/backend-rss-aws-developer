@@ -9,6 +9,11 @@ const csv = require('csv-parser');
 import { Readable } from 'stream';
 import CSVFileValidator from 'csv-file-validator';
 import { HEADERS } from '../constants';
+import {
+  SQSClient,
+  SendMessageCommand,
+  SendMessageBatchCommand,
+} from '@aws-sdk/client-sqs';
 
 const REGION = 'us-east-1';
 const BUCKET_NAME = 'import-service-s3-bucket-aws';
@@ -34,6 +39,38 @@ const validatorConfig = {
 export const handler = async (event: S3Event) => {
   console.log('PARSER Lambda call: ', event.Records);
   const clientS3 = new S3Client({ region: REGION });
+  const sqsClient = new SQSClient();
+
+  async function sendMessagesToSQS(records: Object[], queueUrl: string) {
+    const batches = [];
+
+    for (let i = 0; i < records.length; i += 10) {
+      const batch = records.slice(i, i + 10);
+      batches.push(batch);
+    }
+
+    // Send messages in batches
+    for (const batch of batches) {
+      console.log({ batch });
+      const entries = batch.map((record, index) => ({
+        Id: `${index + 1}`,
+        MessageBody: JSON.stringify(record),
+      }));
+
+      const params = {
+        Entries: entries,
+        QueueUrl: queueUrl,
+      };
+
+      try {
+        const command = new SendMessageBatchCommand(params);
+        const response = await sqsClient.send(command);
+        console.log('Batch sent successfully:', response);
+      } catch (error) {
+        console.error('Error sending batch:', error);
+      }
+    }
+  }
 
   async function moveObject(
     sourceKey: string,
@@ -60,6 +97,7 @@ export const handler = async (event: S3Event) => {
 
   try {
     for (const record of event.Records) {
+      // in there are multiple CSV files
       const bucket = record.s3.bucket.name;
       const key = record.s3.object.key;
       const getObjectCommand = new GetObjectCommand({
@@ -95,21 +133,40 @@ export const handler = async (event: S3Event) => {
         }
 
         const s3Stream = stringToStream(objectAsString);
-        // Parse CSV using csv-parser
-        const results = [];
-        s3Stream
-          .pipe(csv())
-          .on('data', (data: any) => {
-            // Log each record to CloudWatch
-            results.push(data);
-            console.log('CSV Record:', data);
-          })
-          .on('end', async () => {
-            console.log('CSV parsing finished.');
-            //move object from /uploads to /parsed
-            const parsedKey = `parsed/${key}`;
-            await moveObject(key, parsedKey, bucket);
-          });
+        const records: any[] = [];
+
+        const endPromise = new Promise((resolve, reject) => {
+          s3Stream
+            .pipe(csv()) // Parse CSV using csv-parser
+            .on('data', async (data: any) => {
+              records.push(data);
+              // Log each record to CloudWatch
+              // console.log('CSV Record:', data);
+              // 👇  - send each data record as message to SQS "catalogItemsQueue" from "ProductsService"
+              // await sendMessageToSQS(data);
+            })
+            .on('end', async () => {
+              try {
+                console.log('move object from /uploads to /parsed');
+                const parsedKey = `parsed/${key}`;
+                await moveObject(key, parsedKey, bucket);
+                resolve(records);
+              } catch (error) {
+                reject(error);
+              }
+            });
+        });
+
+        try {
+          const records = (await endPromise) as Object[];
+          console.log('After End: ', { records });
+          await sendMessagesToSQS(
+            records,
+            process.env.CATALOG_ITEMS_QUEUE_URL as string
+          );
+        } catch (error) {
+          console.error('Error processing CSV:', error);
+        }
       } else {
         console.log('NOTHING TO PARSE, no such file OR file is empty');
       }
