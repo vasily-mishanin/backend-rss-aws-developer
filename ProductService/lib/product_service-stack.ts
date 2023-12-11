@@ -13,12 +13,17 @@ import { Construct } from 'constructs';
 import * as sqs from 'aws-cdk-lib/aws-sqs';
 import { SqsEventSource } from 'aws-cdk-lib/aws-lambda-event-sources';
 import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
+import * as sns from 'aws-cdk-lib/aws-sns';
+import * as subscriptions from 'aws-cdk-lib/aws-sns-subscriptions';
+
+const EMAIL_ADDRESS_main = 'vasilymishanin@gmail.com';
+const EMAIL_ADDRESS_secondary = 'berserhors@gmail.com';
 
 export class ProductServiceStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    // SQS Queue create (or update if already created)
+    // --- SQS --- Queue create (or update if already created)
     const catalogItemsQueue = new sqs.Queue(this, 'CatalogItemsQueue');
 
     // Export the 👆 SQS Queue URL - it is needed for another stack ->
@@ -26,6 +31,34 @@ export class ProductServiceStack extends cdk.Stack {
     new cdk.CfnOutput(this, 'CatalogItemsQueueUrl', {
       value: catalogItemsQueue.queueUrl,
     });
+
+    // --- SNS Topic ---
+    const createProductTopic = new sns.Topic(this, 'CreateProductTopic', {
+      displayName: 'Product creation topic',
+    });
+
+    createProductTopic.addSubscription(
+      new subscriptions.EmailSubscription(EMAIL_ADDRESS_secondary, {
+        // filterPolicy: {
+        //   productTitle: sns.SubscriptionFilter.stringFilter({
+        //     matchPrefixes: ['iPhone'],
+        //   }),
+        // },
+        filterPolicyWithMessageBody: {
+          //background: sns.FilterOrPolicy.policy({
+          productTitle: sns.FilterOrPolicy.filter(
+            sns.SubscriptionFilter.stringFilter({
+              matchPrefixes: ['iPhone'],
+            })
+          ),
+          //}),
+        },
+      })
+    );
+
+    createProductTopic.addSubscription(
+      new subscriptions.EmailSubscription(EMAIL_ADDRESS_main)
+    );
 
     // declare existing DynamoDB tables
     const productsDbTable = Table.fromTableName(
@@ -124,6 +157,9 @@ export class ProductServiceStack extends cdk.Stack {
 
     // Grant 👆 Lambda permissions to READ messages from the SQS queue
     catalogItemsQueue.grantConsumeMessages(catalogBatchProcessLambda);
+
+    // Grant Lambda permissions to publish messages to the SNS topic
+    createProductTopic.grantPublish(catalogBatchProcessLambda);
 
     // Attach an IAM policy to Lambda function to allow it to read from S3
     catalogBatchProcessLambda.addToRolePolicy(

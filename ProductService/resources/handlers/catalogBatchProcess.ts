@@ -1,5 +1,9 @@
 import { SQSEvent } from 'aws-lambda';
 import { createProduct } from './products/add-one';
+import { SNSClient, PublishCommand } from '@aws-sdk/client-sns';
+
+const TOPIC_ARN =
+  'arn:aws:sns:us-east-1:230091350506:ProductServiceStack-CreateProductTopicE4CD9217-d8IDnTwBjXKR';
 
 export const handler = async (event: SQSEvent) => {
   //console.log('Records', event.Records);
@@ -7,13 +11,39 @@ export const handler = async (event: SQSEvent) => {
 
   console.log('received SQS records ---', records);
 
-  for (const record of records) {
-    const response = await createProduct(record);
-    if (response && response.statusText === 'Product already exists') {
-      console.log('Product already exists');
-    }
-  }
+  const createProductPromises = records.map((record) => createProduct(record));
+  const results = await Promise.all(createProductPromises);
+  console.log({ createProductPromises: results });
 
+  // SNS Configuration
+  const snsClient = new SNSClient({ region: 'us-east-1' });
+  const snsMessages = records.map((record) => {
+    const product = JSON.parse(record);
+    return {
+      message: `New product(s) created: ${product.title}`,
+      productTitle: product.title,
+    };
+  });
+
+  const publishCommands = snsMessages.map(
+    (message) =>
+      new PublishCommand({
+        TopicArn: TOPIC_ARN,
+        Message: JSON.stringify(message),
+        Subject: 'Product Creation Event',
+      })
+  );
+
+  // Publish message to SNS topic
+  try {
+    for (const publishCommand of publishCommands) {
+      const publishResponse = await snsClient.send(publishCommand);
+      console.log({ publishCommand });
+      console.log('Message published to SNS:', publishResponse);
+    }
+  } catch (error) {
+    console.error('Error publishing message to SNS:', error);
+  }
   // await createManyProducts(records);
 };
 
