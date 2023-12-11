@@ -9,7 +9,7 @@ export const handler = async (event: SQSEvent) => {
 
   for (const record of records) {
     const response = await createProduct(record);
-    if (response.statusText === 'Product already exists') {
+    if (response && response.statusText === 'Product already exists') {
       console.log('Product already exists');
     }
   }
