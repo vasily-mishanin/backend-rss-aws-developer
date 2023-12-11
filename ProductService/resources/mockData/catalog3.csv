@@ -1,4 +1,4 @@
-id,title,description,price,discountPercentage,rating,stock,brand,category,thumbnail
+id,title,description,price,discountPercentage,rating,count,brand,category,thumbnail
 1,iPhone 9,"An apple mobile which is nothing like apple, with advanced features",549,12.96,4.69,94,Apple,smartphones,https://i.dummyjson.com/data/products/1/thumbnail.jpg
 2,iPhone X,"SIM-Free, Model A19211 6.5-inch Super Retina HD display with OLED technology A12 Bionic chip with ...",899,17.94,4.44,34,Apple,smartphones,https://i.dummyjson.com/data/products/2/thumbnail.jpg
 3,Samsung Universe 9,"Samsung's new variant which goes beyond Galaxy to the Universe",1249,15.46,4.09,36,Samsung,smartphones,https://i.dummyjson.com/data/products/3/thumbnail.jpg

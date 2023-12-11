@@ -125,6 +125,18 @@ export class ProductServiceStack extends cdk.Stack {
     // Grant 👆 Lambda permissions to READ messages from the SQS queue
     catalogItemsQueue.grantConsumeMessages(catalogBatchProcessLambda);
 
+    // Attach an IAM policy to Lambda function to allow it to read from S3
+    catalogBatchProcessLambda.addToRolePolicy(
+      new PolicyStatement({
+        actions: ['dynamodb:PutItem', 'dynamodb:Query'],
+        resources: [
+          productsDbTable.tableArn, // DynamoDB table ARN
+          stockDbTable.tableArn, // DynamoDB table ARN
+          `${productsDbTable.tableArn}/index/title-index`,
+        ],
+      })
+    );
+
     // CONNECT another Lambdas to DynamoDB tables
     // for get all
     productsDbTable.grantReadWriteData(getProductsListLambda);
@@ -137,6 +149,10 @@ export class ProductServiceStack extends cdk.Stack {
     // for create-one
     productsDbTable.grantReadWriteData(createProductLambda);
     stockDbTable.grantReadWriteData(createProductLambda);
+
+    // for process SQS messages
+    productsDbTable.grantReadWriteData(catalogBatchProcessLambda);
+    stockDbTable.grantReadWriteData(catalogBatchProcessLambda);
 
     // LINK all together
     // Integrate an AWS Lambda function to an API Gateway method.

@@ -49,7 +49,7 @@ export const handler = async (event: S3Event) => {
       batches.push(batch);
     }
 
-    // Send messages in batches
+    // Send messages to SQS in batches
     for (const batch of batches) {
       console.log({ batch });
       const entries = batch.map((record, index) => ({
