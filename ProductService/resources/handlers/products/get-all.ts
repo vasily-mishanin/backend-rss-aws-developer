@@ -3,7 +3,7 @@ import { products } from '../../mockData/productsData';
 import { DynamoDB } from '@aws-sdk/client-dynamodb';
 import { ScanCommand } from '@aws-sdk/lib-dynamodb';
 
-const dynamodb = new DynamoDB({});
+const dynamodb = new DynamoDB({}); // create client but no actual DB
 
 export const getProductsList = async () => {
   try {

@@ -10,9 +10,8 @@ import { IProduct } from '../../../types';
 const { v4: uuidv4 } = require('uuid');
 import { z } from 'zod';
 
-const dynamoDBClient = new DynamoDBClient();
-
 export const createProduct = async (body: string | null) => {
+  const dynamoDBClient = new DynamoDBClient();
   const productUUID: string = uuidv4();
 
   if (!body) {
@@ -24,7 +23,14 @@ export const createProduct = async (body: string | null) => {
     };
   }
 
-  const parsedBody = JSON.parse(body) as IProduct;
+  let parsedBody = JSON.parse(body);
+  parsedBody = {
+    title: parsedBody.title,
+    description: parsedBody.description,
+    price: parseFloat(parsedBody.price),
+    thumbnail: parsedBody.thumbnail,
+    count: parseInt(parsedBody.count)!,
+  };
 
   const productSchema = z.object({
     title: z.string()!,
@@ -66,6 +72,7 @@ export const createProduct = async (body: string | null) => {
     if (existingProducts && existingProducts.length > 0) {
       return {
         statusCode: 400,
+        statusText: 'Product already exists',
         body: JSON.stringify({
           message: `Product with title ${newProduct.title} - already exists`,
         }),
@@ -93,6 +100,7 @@ export const createProduct = async (body: string | null) => {
     //   })
     // );
 
+    // for ProductsTable
     const newProductItem: Record<string, AttributeValue> = {
       id: { S: productUUID },
       title: { S: newProduct.title },
@@ -101,6 +109,7 @@ export const createProduct = async (body: string | null) => {
       thumbnail: { S: newProduct.thumbnail },
     };
 
+    // for StockTable
     const newStockItem: Record<string, AttributeValue> = {
       product_id: { S: productUUID },
       count: { N: count.toString() },
@@ -126,6 +135,8 @@ export const createProduct = async (body: string | null) => {
     const transactionCommand = new TransactWriteItemsCommand(productParams);
 
     await dynamoDBClient.send(transactionCommand);
+
+    console.log('---transactionCommand have sent---');
 
     return {
       statusCode: 200,
