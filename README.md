@@ -67,7 +67,16 @@ Swagger - https://app.swaggerhub.com/apis/VASILYMISHANIN_1/products-service-api/
 
 ### Task 6 SQS & SNS, Async Microservices Communication
 
-https://github.com/rolling-scopes-school/aws/blob/main/aws-developer/06_async_microservices_communication/task.md
+https://github.com/rolling-scopes-school/aws/blob/main/aws-developer/06_async_microservices_communication/task.md  
+https://github.com/vasily-mishanin/backend-rss-aws-developer/pull/4
+All tasks are done including additional one.
+import -> parsing -> message to SQS ->
+-> notify another Lambda -> Put Transact Items in DynamoDB ->
+-> SNS -> email notification with filtering (title that starts with 'IPhone' -> send to another email)
+
+I have cleared DynamoDB for you to check in action.
+You can download and use these CSV data for convenience to import:
+https://github.com/vasily-mishanin/nodejs-aws-shop-react/tree/task-5-import-service/webApp/src/mocks/mock_data
 
 ### Links
 

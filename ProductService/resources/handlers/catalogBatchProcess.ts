@@ -17,23 +17,21 @@ export const handler = async (event: SQSEvent) => {
 
   // SNS Configuration
   const snsClient = new SNSClient({ region: 'us-east-1' });
-  const snsMessages = records.map((record) => {
+  const publishCommands = records.map((record) => {
     const product = JSON.parse(record);
-    return {
-      message: `New product(s) created: ${product.title}`,
-      productTitle: product.title,
-    };
+    return new PublishCommand({
+      TopicArn: TOPIC_ARN,
+      Message: `New product(s) created: ${product.title}`,
+      Subject: 'Product Creation Event',
+      MessageAttributes: {
+        //message: `New product(s) created: ${product.title}`,
+        productTitle: {
+          DataType: 'String',
+          StringValue: product.title,
+        },
+      },
+    });
   });
-
-  const publishCommands = snsMessages.map(
-    (message) =>
-      new PublishCommand({
-        TopicArn: TOPIC_ARN,
-        Message: JSON.stringify(message),
-        Subject: 'Product Creation Event',
-      })
-  );
-
   // Publish message to SNS topic
   try {
     for (const publishCommand of publishCommands) {

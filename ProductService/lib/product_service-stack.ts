@@ -39,20 +39,20 @@ export class ProductServiceStack extends cdk.Stack {
 
     createProductTopic.addSubscription(
       new subscriptions.EmailSubscription(EMAIL_ADDRESS_secondary, {
-        // filterPolicy: {
-        //   productTitle: sns.SubscriptionFilter.stringFilter({
-        //     matchPrefixes: ['iPhone'],
-        //   }),
-        // },
-        filterPolicyWithMessageBody: {
-          //background: sns.FilterOrPolicy.policy({
-          productTitle: sns.FilterOrPolicy.filter(
-            sns.SubscriptionFilter.stringFilter({
-              matchPrefixes: ['iPhone'],
-            })
-          ),
-          //}),
+        filterPolicy: {
+          productTitle: sns.SubscriptionFilter.stringFilter({
+            matchPrefixes: ['iPhone'],
+          }),
         },
+        // filterPolicyWithMessageBody: {
+        //   //background: sns.FilterOrPolicy.policy({
+        //   productTitle: sns.FilterOrPolicy.filter(
+        //     sns.SubscriptionFilter.stringFilter({
+        //       matchPrefixes: ['iPhone'],
+        //     })
+        //   ),
+        //   //}),
+        // },
       })
     );
 
@@ -161,7 +161,7 @@ export class ProductServiceStack extends cdk.Stack {
     // Grant Lambda permissions to publish messages to the SNS topic
     createProductTopic.grantPublish(catalogBatchProcessLambda);
 
-    // Attach an IAM policy to Lambda function to allow it to read from S3
+    // Attach an IAM policy to Lambda function to allow it to read from DynamoDB
     catalogBatchProcessLambda.addToRolePolicy(
       new PolicyStatement({
         actions: ['dynamodb:PutItem', 'dynamodb:Query'],
