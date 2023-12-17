@@ -1,16 +1,23 @@
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-// import * as sqs from 'aws-cdk-lib/aws-sqs';
+import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
+require('dotenv').config();
 
 export class AuthorizationServiceStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    // The code that defines your stack goes here
-
-    // example resource
-    // const queue = new sqs.Queue(this, 'AuthorizationServiceQueue', {
-    //   visibilityTimeout: cdk.Duration.seconds(300)
-    // });
+    // Lambda  that is triggered by API Gateway when some client tries to get protected resource
+    const basicAuthorizerLambda = new NodejsFunction(
+      this,
+      'basicAuthorizerLambda',
+      {
+        entry: 'resources/handlers/basicAuthorizer.ts',
+        handler: 'handler',
+        environment: {
+          MY_GH_ACC_NAME: process.env.vasily_mishanin || 'no_password',
+        },
+      }
+    );
   }
 }

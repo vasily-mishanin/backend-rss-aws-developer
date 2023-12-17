@@ -1,5 +1,6 @@
 import { APIGatewayProxyEvent } from 'aws-lambda';
 import { importProductsFile } from '../handlers/importProductsFile';
+import { HEADERS } from '../constants';
 
 export const handler = async (event: APIGatewayProxyEvent) => {
   console.log('Lambda call: ', { event });
@@ -9,6 +10,7 @@ export const handler = async (event: APIGatewayProxyEvent) => {
   if (!fileName) {
     return {
       statusCode: 400,
+      headers: HEADERS,
       body: JSON.stringify({
         message: `Missed query parameter - name (file name)`,
       }),
@@ -23,6 +25,7 @@ export const handler = async (event: APIGatewayProxyEvent) => {
       default:
         return {
           statusCode: 400,
+          headers: HEADERS,
           body: JSON.stringify({
             message: `Invalid HTTP method - ${event.httpMethod}`,
           }),
@@ -33,6 +36,7 @@ export const handler = async (event: APIGatewayProxyEvent) => {
     console.log(error);
     return {
       statusCode: 500,
+      headers: HEADERS,
       body: JSON.stringify({ message: error }),
     };
   }
