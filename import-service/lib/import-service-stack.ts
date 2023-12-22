@@ -7,18 +7,22 @@ import {
   LambdaIntegration,
   RestApi,
   UsagePlan,
+  TokenAuthorizer,
 } from 'aws-cdk-lib/aws-apigateway';
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
-import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
+import { PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as s3n from 'aws-cdk-lib/aws-s3-notifications';
 import * as sqs from 'aws-cdk-lib/aws-sqs';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 
 export class ImportServiceStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
     const EXISTING_BUCKET_NAME = 'import-service-s3-bucket-aws';
+    const AUTHORIZER_ARN =
+      'arn:aws:lambda:us-east-1:230091350506:function:AuthorizationServiceStack-basicAuthorizerLambda6F9-H4wIIbgjDnB2';
 
     // // Import the SQS Queue URL from the "products-service" stack
     // const EXISTING_SQS_QUEUE_URL = cdk.Fn.importValue(
@@ -44,9 +48,12 @@ export class ImportServiceStack extends cdk.Stack {
       EXISTING_BUCKET_NAME
     );
 
-    //API
+    //API Gateway
     const api = new RestApi(this, 'importRestAPI', {
       restApiName: 'importRestAPI',
+      // defaultMethodOptions: {
+      //   authorizer: importAuthorizer,
+      // },
       defaultCorsPreflightOptions: {
         allowOrigins: Cors.ALL_ORIGINS,
         allowMethods: Cors.ALL_METHODS,
@@ -69,7 +76,8 @@ export class ImportServiceStack extends cdk.Stack {
     usagePlan.addApiKey(apiKey);
 
     // LAMBDAS
-    // creates suged upload URL for PUT requests
+
+    // creates signed upload URL for PUT requests
     const importProductsFileLambda = new NodejsFunction(
       this,
       'importProductsFileLambda',
@@ -123,8 +131,43 @@ export class ImportServiceStack extends cdk.Stack {
       importProductsFileLambda
     );
 
+    /**
+     * When a client makes a request to an API's methods configured with an authorizer,
+     *  API Gateway calls the Lambda authorizer, which takes the caller's identity as input and returns an IAM policy as output.
+     */
+
+    const assumedAuthRole = new Role(this, 'TokenAuthorizerRole', {
+      assumedBy: new ServicePrincipal('apigateway.amazonaws.com'),
+    });
+    assumedAuthRole.addToPolicy(
+      new PolicyStatement({
+        actions: ['lambda:InvokeFunction'],
+        resources: [AUTHORIZER_ARN],
+      })
+    );
+
+    const importAuthorizer = new TokenAuthorizer(this, 'ImportAuthorizer', {
+      handler: lambda.Function.fromFunctionArn(
+        this,
+        'BasicAuthorizerArn',
+        AUTHORIZER_ARN
+      ),
+      resultsCacheTtl: cdk.Duration.seconds(0),
+      assumeRole: assumedAuthRole,
+    });
+
     productsFileImport.addMethod('GET', productsFileImportIntegration, {
       apiKeyRequired: false,
+      authorizer: importAuthorizer,
+      methodResponses: [
+        {
+          statusCode: '200',
+          responseParameters: {
+            'method.response.header.Content-Type': true,
+            'method.response.header.Access-Control-Allow-Origin': true,
+          },
+        },
+      ],
     });
 
     // new cdk.CfnOutput(this, 'API Key ID', {
