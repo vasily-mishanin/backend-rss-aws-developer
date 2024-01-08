@@ -149,7 +149,42 @@ FE PR - vasily-mishanin/nodejs-aws-shop-react#7
 
 ### Task - 10 (Backend For Frontend)
 
-https://github.com/rolling-scopes-school/aws/blob/main/aws-developer/10_backend_for_frontend/task.md
+task-10 - https://github.com/rolling-scopes-school/aws/tree/main/aws-developer/10_backend_for_frontend
+Self estimation - 80/100
+
+Check flow:
+Open FE App => open Postman => get products => get one product => add product => see in FE App
+
+FRONTEND:
+Cloudfront Distribution - https://d38xygjrrazjb0.cloudfront.net/
+FE PR - https://github.com/vasily-mishanin/nodejs-aws-shop-react/pull/8
+
+BFF Service API URL:
+
+- GET (/products and products/:id)
+  http://vasily-mishanin-bff-api-bfftest.us-east-1.elasticbeanstalk.com/products
+  http://vasily-mishanin-bff-api-bfftest.us-east-1.elasticbeanstalk.com/cart
+
+- POST - createProduct
+  http://vasily-mishanin-bff-api-bfftest.us-east-1.elasticbeanstalk.com/products
+  Example body:
+  `{
+    "title":"3D Embellishment Art Lamp",
+    "description":"3D led lamp sticker Wall sticker 3d wall art light on/off button  cell operated (included)",
+    "price":333,
+    "thumbnail":"https://cdn.dummyjson.com/product-images/28/thumbnail.jpg",
+    "count":222
+}`
+
+API Gateway Proxy for BFF - https://a4lbovzku0.execute-api.us-east-1.amazonaws.com
+
+Product Service API - https://qb6966ovig.execute-api.us-east-1.amazonaws.com/prod
+Cart API (https proxy via API Gateway):
+https://8n6zt7471d.execute-api.us-east-1.amazonaws.com/api/profile/cart
+https://8n6zt7471d.execute-api.us-east-1.amazonaws.com/api/profile/order
+
+You can use browser's devtools to set `authorization_token` in Local Storage
+Valid Token - `dmFzaWx5X21pc2hhbmluOlRFU1RfUEFTU1dPUkQ=`
 
 ### Links
 
