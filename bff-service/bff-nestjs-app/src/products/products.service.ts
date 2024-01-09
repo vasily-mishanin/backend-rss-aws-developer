@@ -1,7 +1,7 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { AxiosResponse } from 'axios';
-import { Observable, throwError } from 'rxjs';
+import { Observable, lastValueFrom, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { CreateProductDto } from './dto/create-product.dto';
 
@@ -9,12 +9,20 @@ import { CreateProductDto } from './dto/create-product.dto';
 export class ProductsService {
   constructor(private readonly httpService: HttpService) {}
 
-  getProducts(serviceUrl: string): Observable<any[]> {
-    const products = this.httpService
+  async getProducts(serviceUrl: string) {
+    const productsObservable = this.httpService
       .get(serviceUrl)
       .pipe(map((response: AxiosResponse<any[]>) => response.data));
-    console.log({ products });
-    return products;
+    console.log({ productsObservable });
+    try {
+      const products = await lastValueFrom(productsObservable);
+      console.log({ products });
+      return products;
+    } catch (error) {
+      // Handle errors if necessary
+      console.error('Error fetching products:', error);
+      throw error;
+    }
   }
 
   getProduct(serviceUrl: string, productId: string): Observable<any[]> {

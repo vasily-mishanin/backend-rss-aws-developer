@@ -7,23 +7,37 @@ import {
   Post,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
-import { Observable } from 'rxjs';
+import { Observable, lastValueFrom } from 'rxjs';
 import { CreateProductDto } from './dto/create-product.dto';
+import ProductsCache from './products-cache';
+const CASH_EXPIRE_TIME = 2 * 60000; // 2 minutes
 
 @Controller('products')
 export class ProductsController {
   private readonly productService: ProductsService;
+  private readonly cache: ProductsCache;
 
   constructor(productService: ProductsService) {
     this.productService = productService; //@Injectable
+    this.cache = new ProductsCache();
   }
 
   // GET /products
   @Get()
-  getProducts() {
+  async getProducts() {
     const recipientUrl = `${process.env.product}/products`;
-    console.log({ recipientUrl });
-    return this.productService.getProducts(recipientUrl);
+
+    if (
+      this.cache.cachedProducts.length &&
+      Date.now() < this.cache.time + CASH_EXPIRE_TIME
+    ) {
+      console.log('GET CACHE: ', this.cache.cachedProducts);
+      return this.cache.cachedProducts;
+    }
+
+    const products = await this.productService.getProducts(recipientUrl);
+    this.cache.setProducts(products);
+    return products;
   }
 
   // GET /products/:id ---> {...}
